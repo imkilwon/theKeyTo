@@ -40,14 +40,14 @@ class _ScreenLayoutState extends State<ScreenLayout> {
           child: Container(
             decoration: BoxDecoration(border: Border(top: BorderSide(color: Colors.grey[300]!,width:1))),
             child: TabBar(
-              indicator: BoxDecoration(border:Border(top: BorderSide(color: Colors.black,width: 3),),),
+              indicator: BoxDecoration(border:Border(top: BorderSide(color: appAccentColor ,width: 3),),),
               onTap: changePage,
               indicatorSize: TabBarIndicatorSize.label,
               tabs: [
-                Tab(child: Icon(Icons.home_outlined, color: currentPage==0? Colors.black : Colors.grey),),
-                Tab(child: Icon(Icons.book,color: currentPage==1? Colors.black : Colors.grey),),
-                Tab(child: Icon(Icons.account_circle_outlined,color: currentPage==2? Colors.black : Colors.grey),),
-                Tab(child: Icon(Icons.menu,color: currentPage==3? Colors.black: Colors.grey),),
+                Tab(child: Icon(Icons.home_outlined, color: currentPage==0? appAccentColor : Colors.grey),),
+                Tab(child: Icon(Icons.book,color: currentPage==1? appAccentColor : Colors.grey),),
+                Tab(child: Icon(Icons.account_circle_outlined,color: currentPage==2? appAccentColor : Colors.grey),),
+                Tab(child: Icon(Icons.menu,color: currentPage==3? appAccentColor : Colors.grey),),
               ],
             ),
           ),

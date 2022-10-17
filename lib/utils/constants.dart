@@ -4,12 +4,19 @@ import 'package:the_key_to/screens/book_shelf_screen.dart';
 import 'package:the_key_to/screens/main_home.dart';
 import 'package:the_key_to/screens/more_screen.dart';
 
+Color appAccentColor = Colors.white.withOpacity(0.8);
+
+TextStyle officialTextStyle = const TextStyle(
+    fontSize: 18, fontFamily: "NotoSans", fontWeight: FontWeight.w700);
+
 List<Widget> screens = [
   MainHome(),
   BookShelfScreen(),
   AccountScreen(),
   MoreScreen(),
 ];
+
+//List<String> category = ["자기소개서 완성", "자격증 합격", "입시 합격", "기타"];
 
 double appBarHeight = 105;
 

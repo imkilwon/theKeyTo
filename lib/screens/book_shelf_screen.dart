@@ -16,7 +16,6 @@ class _BookShelfScreenState extends State<BookShelfScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("책 장"),
-          toolbarHeight: screenSize.height/14,
         ),
         body: ListView(
           children: [

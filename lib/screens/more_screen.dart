@@ -24,7 +24,7 @@ class MoreScreen extends StatelessWidget {
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
                   fontFamily: 'NotoSans',
-                  color: Colors.black.withOpacity(0.8)
+                  color: appAccentColor,
                 ),),
               ),
             ),

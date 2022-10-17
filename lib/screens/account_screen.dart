@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:the_key_to/widgets/login_state_widget.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -15,12 +16,9 @@ class _AccountScreenState extends State<AccountScreen> {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("내정보 페이지"),
-        toolbarHeight: screenSize.height/14,
+        title: LoginStateWidget(),
       ),
-      body:Center(
-        child: Text("파이어 베이스 연동하고 완성하기"),
-      )
+      body: Center(),
     );
   }
 }

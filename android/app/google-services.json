@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "805814824492",
+    "project_id": "thekeyto-ba57d",
+    "storage_bucket": "thekeyto-ba57d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805814824492:android:6b8f3c2629aac32197ab89",
+        "android_client_info": {
+          "package_name": "com.theKeyTo.theKeyTo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805814824492-g2a51fmluq1ofe4r0akqehebpnce6eud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAikcyJlpbY9GihmsXLYXZ7t36UwTE2K7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805814824492-g2a51fmluq1ofe4r0akqehebpnce6eud.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805814824492-h8pcloqdhfsi2tv6be40htgbmdp7htov.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.theKeyTo.theKeyTo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
