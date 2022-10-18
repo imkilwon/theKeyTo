@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
+import 'package:the_key_to/screens/selling_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
 import 'package:the_key_to/widgets/display_book_widget.dart';
 
@@ -98,7 +99,7 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                     label: Column(
                       children: [
                         IconButton(icon: Icon(Icons.add),onPressed: (){
-                          Get.to(()=>SignInScreen());
+                          Get.to(()=>SellingScreen());
                         },iconSize: 40,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.home),onPressed: (){},iconSize: 40,),

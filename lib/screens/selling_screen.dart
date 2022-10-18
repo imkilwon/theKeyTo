@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:the_key_to/utils/constants.dart';
+import 'package:the_key_to/widgets/basic_button_widget.dart';
 import 'package:the_key_to/widgets/normal_text_field_widget.dart';
 
 class SellingScreen extends StatefulWidget {
@@ -15,14 +17,20 @@ class _SellingScreenState extends State<SellingScreen> {
   TextEditingController contextController = TextEditingController();
 
   //선택한 값을 보여줄 변수
-  String valueChoose = "카테고리 선택";
-  List<String> category = ["자기소개서 완성", "자격증 합격", "입시 합격", "기타"];
+  String? valueChoose = "카테고리 선택";
+  final category = ["카테고리 선택", "자기소개서 완성", "입시 합격", "자격증 합격", "전자책", "기타"];
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(title: Text("여러분의 비결을 판매하세요!")),
+      appBar: AppBar(
+        title: Text("판매 글 작성"),
+        leading: IconButton(icon: Icon(Icons.chevron_left),onPressed: (){
+          Get.back();
+        },),
+        actions: [TextButton(onPressed: () {}, child: Text("완료",style: TextStyle(fontSize: 15,fontFamily: "NotoSans",fontWeight: FontWeight.w700,color: Colors.cyan),))],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -49,16 +57,31 @@ class _SellingScreenState extends State<SellingScreen> {
               color: Colors.grey,
             ),
             //카테고리 선택
-            DropdownButton(
-              value: valueChoose,
-              onChanged: (newValue) {
-                setState(() {
-                  valueChoose = newValue;
-                });
-              },
-              items: category.map((valueItem) => DropdownMenuItem(value: valueItem,child: Text(valueItem))).toList()
+            SizedBox(
+              width: screenSize.width * 0.9,
+              child: DropdownButton(
+                style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: "NotoSans",
+                    fontWeight: FontWeight.w500),
+                isExpanded: true,
+                value: valueChoose,
+                underline: SizedBox(),
+                icon: const Icon(Icons.arrow_drop_down_outlined),
+                iconSize: 30,
+                items: category.map((String items) {
+                  return DropdownMenuItem(
+                    value: items,
+                    child: Text(items),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    valueChoose = newValue!;
+                  });
+                },
+              ),
             ),
-
             Divider(
               color: Colors.grey,
             ),
