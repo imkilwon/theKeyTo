@@ -1,16 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:the_key_to/model/user_details_model.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 
 
 class AuthenticationMethods{
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  Future<String> signUpUser({required String email, required String password})async{
+  CloudFirestoreClass_ cloudFirestoreClass = CloudFirestoreClass_();
+  Future<String> signUpUser({required String email, required String password,required String nickName})async{
     email.trim();
     password.trim();
+    nickName.trim();
 
     String output = "Something went wrong";
-    if ( email != "" && password != ""){
+    if ( email != "" && password != "" && nickName !="" ){
       try{
         await firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+        final user = UserDetailsModel(name: nickName);
+        await cloudFirestoreClass.uploadNickNameAndUidToDataBase(user: user);
         output = "success";
         //아이디랑 비밀번호 만들기 시도
       } on FirebaseAuthException catch(e){

@@ -1,8 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/utils/constants.dart';
-import 'package:the_key_to/widgets/basic_button_widget.dart';
 import 'package:the_key_to/widgets/normal_text_field_widget.dart';
+import '../resources/cloudfirestore_methods.dart';
+import '../utils/utils.dart';
 
 class SellingScreen extends StatefulWidget {
   const SellingScreen({Key? key}) : super(key: key);
@@ -12,12 +14,13 @@ class SellingScreen extends StatefulWidget {
 }
 
 class _SellingScreenState extends State<SellingScreen> {
+  Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController contextController = TextEditingController();
 
   //선택한 값을 보여줄 변수
-  String? valueChoose = "카테고리 선택";
+  String valueChoose = "카테고리 선택";
   final category = ["카테고리 선택", "자기소개서 완성", "입시 합격", "자격증 합격", "전자책", "기타"];
 
   @override
@@ -29,7 +32,12 @@ class _SellingScreenState extends State<SellingScreen> {
         leading: IconButton(icon: Icon(Icons.chevron_left),onPressed: (){
           Get.back();
         },),
-        actions: [TextButton(onPressed: () {}, child: Text("완료",style: TextStyle(fontSize: 15,fontFamily: "NotoSans",fontWeight: FontWeight.w700,color: Colors.cyan),))],
+        actions: [TextButton(onPressed: ()
+        async {
+          String output = await CloudFirestoreClass_()
+              .uploadNoteToDatabase(image:image,noteName: nameController.text, s_cost: priceController.text,category: valueChoose,context: contextController.text);
+          print(output);
+        },child: const Text("완료",style: TextStyle(fontSize: 15,fontFamily: "NotoSans",fontWeight: FontWeight.w700,color: Colors.cyan),))],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -39,7 +47,29 @@ class _SellingScreenState extends State<SellingScreen> {
             ),
             Container(
               height: screenSize.height / 8,
-              color: Colors.orange,
+              child: Stack(
+                children: [
+                  image == null
+                      ? Image.network(
+                    "https://m.media-amazon.com/images/I/11uufjN3lYL._SX90_SY90_.png",
+                    height: screenSize.height / 10,
+                  )
+                      : Image.memory(
+                    image!,
+                    height: screenSize.height / 10,
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        Uint8List? temp = await Utils().pickImage();
+                        if (temp != null) {
+                          setState(() {
+                            image = temp;
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.file_upload))
+                ],
+              ),
             ),
             Divider(
               color: Colors.grey,
@@ -102,6 +132,7 @@ class _SellingScreenState extends State<SellingScreen> {
               height: screenSize.width / 2,
               child: TextField(
                 maxLines: 10,
+                controller: contextController,
                 decoration: InputDecoration(
                   labelStyle: officialTextStyle,
                   label: Text("내용"),

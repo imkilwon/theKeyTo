@@ -69,8 +69,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             BasicButtonWidget(
                 onPressed: () async {
                   String output = await authenticationMethods.signUpUser(
-                      email: emailEditingController.text,
-                      password: passwordEditingController.text);
+                    email: emailEditingController.text,
+                    password: passwordEditingController.text,
+                    nickName : nickNameEditingController.text,
+                  );
                   if (output == "success") {
                     Get.off(() => SignInScreen());
                   }
