@@ -4,6 +4,7 @@ import 'package:the_key_to/screens/cover_letter_screen.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
+import 'package:the_key_to/screens/test.dart';
 import 'package:the_key_to/widgets/display_book_widget.dart';
 
 import '../utils/constants.dart';
@@ -100,21 +101,24 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                       children: [
                         IconButton(icon: Icon(Icons.add),onPressed: (){
                           Get.to(()=>SellingScreen());
-                        },iconSize: 40,),
+                        },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
-                        IconButton(icon: Icon(Icons.home),onPressed: (){},iconSize: 40,),
+                        IconButton(icon: Icon(Icons.home),onPressed: (){
+                          Get.to(()=>TestPage());
+                        },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
-                        IconButton(icon: Icon(Icons.search),onPressed: (){},iconSize: 40,),
+                        IconButton(icon: Icon(Icons.search),onPressed: (){
+                          Get.to(()=>TestPage());
+                        },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.keyboard_return),onPressed: (){
                           setState(() {
                             _isSelected = !_isSelected;
                           });
-                        },iconSize: 40,),
+                        },iconSize: 25,),
                       ],
                     ),
                     onPressed: () {
-
                     }),
               )
             : Container(

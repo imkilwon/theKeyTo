@@ -29,15 +29,32 @@ class _SellingScreenState extends State<SellingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("판매 글 작성"),
-        leading: IconButton(icon: Icon(Icons.chevron_left),onPressed: (){
-          Get.back();
-        },),
-        actions: [TextButton(onPressed: ()
-        async {
-          String output = await CloudFirestoreClass_()
-              .uploadNoteToDatabase(image:image,noteName: nameController.text, s_cost: priceController.text,category: valueChoose,context: contextController.text);
-          print(output);
-        },child: const Text("완료",style: TextStyle(fontSize: 15,fontFamily: "NotoSans",fontWeight: FontWeight.w700,color: Colors.cyan),))],
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                String output = await CloudFirestoreClass_()
+                    .uploadNoteToDatabase(
+                        image: image,
+                        noteName: nameController.text,
+                        s_cost: priceController.text,
+                        category: valueChoose,
+                        context: contextController.text);
+              },
+              child: const Text(
+                "완료",
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: "NotoSans",
+                    fontWeight: FontWeight.w700,
+                    color: Colors.cyan),
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -51,13 +68,13 @@ class _SellingScreenState extends State<SellingScreen> {
                 children: [
                   image == null
                       ? Image.network(
-                    "https://m.media-amazon.com/images/I/11uufjN3lYL._SX90_SY90_.png",
-                    height: screenSize.height / 10,
-                  )
+                          "https://m.media-amazon.com/images/I/11uufjN3lYL._SX90_SY90_.png",
+                          height: screenSize.height / 10,
+                        )
                       : Image.memory(
-                    image!,
-                    height: screenSize.height / 10,
-                  ),
+                          image!,
+                          height: screenSize.height / 10,
+                        ),
                   IconButton(
                       onPressed: () async {
                         Uint8List? temp = await Utils().pickImage();

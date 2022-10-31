@@ -36,7 +36,7 @@ class _MyBookWidgetState extends State<MyBookWidget> {
         ),
         Padding(
           padding: const EdgeInsets.only(top:8.0),
-          child: Text("섹스를 잘하는 남자는 무슨 비결이 있을까? 매력적인 남자가 되는 58가지 방법",style: TextStyle(fontFamily: "Dalseo",fontWeight: FontWeight.w300,fontSize: 20,),maxLines: 2,overflow: TextOverflow.fade,),
+          child: Text("8가지 방법",style: TextStyle(fontFamily: "Dalseo",fontWeight: FontWeight.w300,fontSize: 20,),maxLines: 2,overflow: TextOverflow.fade,),
         ),
       ],
     );
