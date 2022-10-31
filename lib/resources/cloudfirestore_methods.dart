@@ -8,17 +8,15 @@ import 'package:the_key_to/model/user_details_model.dart';
 import '../model/product_model.dart';
 
 class CloudFirestoreClass_ {
-
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   Future uploadNickNameAndUidToDataBase(
-      {required UserDetailsModel user})async{
+      {required UserDetailsModel user}) async {
     final docUid = await firebaseFirestore.collection('users').doc();
     user.userId = docUid.id;
     docUid.set(user.getJson());
   }
-
 
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
@@ -33,10 +31,16 @@ class CloudFirestoreClass_ {
 
     try {
       final docProduct = firebaseFirestore.collection('notes').doc();
-      String url = await uploadImageToDatabase(image: image, uid: docProduct.id);
+      String url =
+          await uploadImageToDatabase(image: image, uid: docProduct.id);
       int cost = int.parse(s_cost);
-      final product = ProductModel(url:url,
-          productName: noteName, cost: cost, category :category ,context : context, productId: docProduct.id);
+      final product = ProductModel(
+          url: url,
+          productName: noteName,
+          cost: cost,
+          category: category,
+          context: context,
+          productId: docProduct.id);
 
       await docProduct.set(product.getJson());
       output = "success";
@@ -47,12 +51,18 @@ class CloudFirestoreClass_ {
   }
 }
 
+Stream<List<ProductModel>> readProduct() {
+  return FirebaseFirestore.instance.collection('notes').snapshots().map(
+      (snapshots) => snapshots.docs
+          .map((doc) => ProductModel.getModelFromJson(json: doc.data()))
+          .toList());
+}
+
 Future<String> uploadImageToDatabase(
-    {required Uint8List? image, String uid=''}) async {
+    {required Uint8List? image, String uid = ''}) async {
   Reference storageRef =
-  FirebaseStorage.instance.ref().child("notes").child(uid);
+      FirebaseStorage.instance.ref().child("notes").child(uid);
   UploadTask uploadTask = storageRef.putData(image!);
   TaskSnapshot task = await uploadTask;
   return task.ref.getDownloadURL();
 }
-
