@@ -104,11 +104,11 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                         },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.home),onPressed: (){
-                          Get.to(()=>TestPage());
+                          // Get.to(()=>TestPage());
                         },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.search),onPressed: (){
-                          Get.to(()=>TestPage());
+                          // Get.to(()=>TestPage());
                         },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.keyboard_return),onPressed: (){
