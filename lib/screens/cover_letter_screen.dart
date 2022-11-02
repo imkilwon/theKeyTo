@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/product_model.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
-import 'package:the_key_to/screens/test.dart';
+import 'package:the_key_to/screens/product_detail_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 
@@ -23,14 +24,12 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('${snapshot.error}');
-          }
-          else if (snapshot.hasData) {
+          } else if (snapshot.hasData) {
             final product = snapshot.data!;
             return ListView(
               children: product.map(buildProduct).toList(),
             );
-          }
-          else {
+          } else {
             return const Center(child: CircularProgressIndicator());
           }
         },
@@ -41,8 +40,18 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
   Widget buildProduct(ProductModel productModel) {
     Size screenSize = Utils().getScreenSize();
     return GestureDetector(
-      onTap: (){
-        Get.to(()=>TestPage(url: productModel.url, productName: productModel.productName, context: productModel.context, sellerName: "김똘똘", cost: productModel.cost ));
+      onTap: () {
+        if(FirebaseAuth.instance.currentUser != null){
+          //로그인이 되어있지 않으면 자세한 내용을 보지 못함
+          Get.to(() => ProductDetailScreen(
+              url: productModel.url,
+              productName: productModel.productName,
+              context: productModel.context,
+              sellerName: "김똘똘",
+              cost: productModel.cost));
+        }else{
+          Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.");
+        }
       },
       child: Column(
         children: [
@@ -69,9 +78,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                       //이미지가 들어갈 상자
                       width: screenSize.width * 0.4,
                       height: screenSize.width / 2,
-                      child: Image.network(
-                          productModel.url,
-                          fit: BoxFit.cover),
+                      child: Image.network(productModel.url, fit: BoxFit.cover),
                     ),
                   ],
                 ),
@@ -83,7 +90,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                     height: screenSize.width * 0.02,
                   ),
                   SizedBox(
-                      width: screenSize.width*0.45,
+                      width: screenSize.width * 0.45,
                       height: screenSize.width * 0.1,
                       child: Text(
                         productModel.productName,
@@ -114,8 +121,8 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                             fontSize: 20),
                       )),
                   Container(
-                    width: screenSize.width*0.47,
-                    height: screenSize.height*0.1,
+                    width: screenSize.width * 0.47,
+                    height: screenSize.height * 0.1,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [

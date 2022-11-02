@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/utils/constants.dart';
@@ -38,14 +39,15 @@ class _SellingScreenState extends State<SellingScreen> {
         actions: [
           TextButton(
               onPressed: () async {
-                String output = await CloudFirestoreClass_()
-                    .uploadNoteToDatabase(
-                        image: image,
-                        noteName: nameController.text,
-                        s_cost: priceController.text,
-                        category: valueChoose,
-                        context: contextController.text);
-              },
+                  String output = await CloudFirestoreClass_()
+                      .uploadNoteToDatabase(
+                          image: image,
+                          noteName: nameController.text,
+                          s_cost: priceController.text,
+                          category: valueChoose,
+                          context: contextController.text);
+                },
+
               child: const Text(
                 "완료",
                 style: TextStyle(

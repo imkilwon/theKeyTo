@@ -1,10 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
-import 'package:the_key_to/screens/test.dart';
+import 'package:the_key_to/screens/product_detail_screen.dart';
+import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/display_book_widget.dart';
 
 import '../utils/constants.dart';
@@ -100,7 +102,12 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                     label: Column(
                       children: [
                         IconButton(icon: Icon(Icons.add),onPressed: (){
-                          Get.to(()=>SellingScreen());
+                          if(FirebaseAuth.instance.currentUser!=null){
+                            Get.to(()=>SellingScreen());
+                          }
+                          else{
+                            Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.");
+                          }
                         },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),
                         IconButton(icon: Icon(Icons.home),onPressed: (){

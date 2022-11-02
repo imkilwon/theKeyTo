@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:the_key_to/resources/authentication_method.dart';
 import 'package:the_key_to/screens/sign_up_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
+import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/basic_button_widget.dart';
 import 'package:the_key_to/widgets/normal_text_field_widget.dart';
 
@@ -52,19 +53,20 @@ class _SignInScreenState extends State<SignInScreen> {
               height: 30,
             ),
             BasicButtonWidget(
-              onPressed:
-                  () async {
-                String output = await authenticationMethods.signInUser(
-                    email: emailEditingController.text,
-                    password: passwordEditingController.text);
-                if(output == "success"){
-                  Get.offAll(()=>ScreenLayout());
-                }
+              onPressed: () async {
+                  String output = await authenticationMethods.signInUser(
+                      email: emailEditingController.text,
+                      password: passwordEditingController.text);
+                  Utils().showSnackBar(context: context, content: output);
+                  if(output == "success"){
+                    Get.offAll(()=>ScreenLayout());
+                  }
                 //스낵바 위젯 추가하기
               },
               buttonName: "로그인",
               color: appAccentColor,
             ),
+            SizedBox(height: 10,),
             BasicButtonWidget(onPressed: (){Get.to(()=>SignUpScreen());}, buttonName: "회원가입", color: appAccentColor),
           ],
         ),
