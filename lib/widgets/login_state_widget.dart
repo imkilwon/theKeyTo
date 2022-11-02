@@ -28,14 +28,19 @@ class _LoginStateWidgetState extends State<LoginStateWidget> {
         children: [
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
-              Text("${FirebaseAuth.instance.currentUser?.email}",
+              Container(
+                width: 20,
+                height: 20,
+                child: Image.asset("assets/images/user_profile.jpg"),
+              ),
+              Text("",
                   //지금은 이메일인데 database uid 연동으로 이름 갖고오기
                   style:
-                  TextStyle(fontFamily: "NotoSans",fontWeight: FontWeight.w500),),
-              SizedBox(
+                  const TextStyle(fontFamily: "NotoSans",fontWeight: FontWeight.w500),),
+              const SizedBox(
                 width: 10,
               ),
             ],
