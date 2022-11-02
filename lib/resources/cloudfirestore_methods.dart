@@ -24,6 +24,7 @@ class CloudFirestoreClass_ {
     required String category,
     required String context,
     required String sellerName,
+    required List<int> dates,
   }) async {
     noteName.trim();
     s_cost.trim();
@@ -42,8 +43,15 @@ class CloudFirestoreClass_ {
           context: context,
           sellerName: sellerName,
           sellerUid: firebaseAuth.currentUser!.uid,
-          productId: docProduct.id);
+          productId: docProduct.id,
+          buyCnt: 0,
+          favorite: 0,
+          year: dates[0],
+         month: dates[1],
+          day: dates[2],
+      );
 
+      await docProduct.set(product.getJson());
       await docProduct.set(product.getJson());
       output = "success";
     } catch (e) {

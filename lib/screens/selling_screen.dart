@@ -15,6 +15,8 @@ class SellingScreen extends StatefulWidget {
 }
 
 class _SellingScreenState extends State<SellingScreen> {
+  List<int> dates = [DateTime.now().year,DateTime.now().month,DateTime.now().day];
+
   Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -47,6 +49,7 @@ class _SellingScreenState extends State<SellingScreen> {
                           category: valueChoose,
                           context: contextController.text,
                           sellerName: "김똘똘",
+                          dates:dates,
                     //버튼 누르는 새끼 이름 가져오게 하는 코드 필요
                   );
                 },

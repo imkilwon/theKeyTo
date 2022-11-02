@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/product_model.dart';
-import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/basic_button_widget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  final String url;
-  final String productName;
-  final String context;
-  final String sellerName;
-
-  //리뷰 점수도 추가해야함
-  final int cost;
+  final ProductModel productModel;
 
   const ProductDetailScreen(
       {Key? key,
-      required this.url,
-      required this.productName,
-      required this.context,
-      required this.sellerName,
-      required this.cost})
+      required this.productModel})
       : super(key: key);
 
   @override
@@ -50,29 +39,31 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Container(
                   width: double.infinity,
                   height: screenSize.height * 0.3,
-                  child: Image.network(widget.url, fit: BoxFit.fitHeight),
+                  child: Image.network(widget.productModel.url, fit: BoxFit.fitHeight),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InkWell(onTap: (){},child: Text("${widget.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
+                    InkWell(onTap: (){},child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
                     Row(
                       children: [
-                        IconButton(onPressed: (){}, icon: Icon(Icons.favorite_border)),
+                        IconButton(onPressed: (){
+                        }, icon: Icon(Icons.favorite_border)),
+                        Text("${widget.productModel.favorite}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w300),),
                         IconButton(onPressed: (){}, icon: Icon(Icons.share)),
                       ],
                     )
                   ],
                 ),
                 Divider(color: appAccentColor,),
-                Text(widget.productName,style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700,fontFamily: "NotoSans",color: Colors.white),),
-                SizedBox(height: 20.0,),
-                Text("리뷰 별점",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "NotoSans",color: appAccentColor),),
+                Text(widget.productModel.productName,style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700,fontFamily: "NotoSans",color: Colors.white),),
+                SizedBox(height: 10.0,),
+                Text("게시일 : ${widget.productModel.year} - ${widget.productModel.month} - ${widget.productModel.day}",style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300,fontFamily: "NotoSans",color: appAccentColor),),
                 SizedBox(height: 30.0,),
-                Text(widget.context,style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500,fontFamily: "NotoSans",color: Colors.white),),
+                Text(widget.productModel.context,style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500,fontFamily: "NotoSans",color: Colors.white),),
                 SizedBox(height: 30.0),
-                Text("구매 건수 ()",style : TextStyle(fontSize: 14,fontFamily: "NotoSans",fontWeight: FontWeight.w300,color: appAccentColor)),
+                Text("구매 건수 ${widget.productModel.buyCnt}",style : TextStyle(fontSize: 14,fontFamily: "NotoSans",fontWeight: FontWeight.w300,color: appAccentColor)),
                 SizedBox(height: 30.0),
                 Divider(color: appAccentColor,),
                 BasicButtonWidget(onPressed: (){}, buttonName: "구매하기", color: appAccentColor),

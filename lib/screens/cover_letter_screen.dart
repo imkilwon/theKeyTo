@@ -43,12 +43,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
       onTap: () {
         if(FirebaseAuth.instance.currentUser != null){
           //로그인이 되어있지 않으면 자세한 내용을 보지 못함
-          Get.to(() => ProductDetailScreen(
-              url: productModel.url,
-              productName: productModel.productName,
-              context: productModel.context,
-              sellerName: "김똘똘",
-              cost: productModel.cost));
+          Get.to(() => ProductDetailScreen(productModel: productModel,));
         }else{
           Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.");
         }
@@ -134,7 +129,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
                           ),
                         ),
                         Text(
-                          "1",
+                          "${productModel.favorite}",
                           style: TextStyle(
                               fontFamily: "Dalseo",
                               fontWeight: FontWeight.w300,
