@@ -4,6 +4,8 @@ class ProductModel {
   final int cost;
   final String category;
   final String context;
+  final String sellerName;
+  final String sellerUid;
   String productId;
 
   ProductModel({
@@ -12,6 +14,8 @@ class ProductModel {
     required this.cost,
     required this.category,
     required this.context,
+    required this.sellerName,
+    required this.sellerUid,
     this.productId = '',
   });
 
@@ -23,6 +27,8 @@ class ProductModel {
       'category':category,
       'context':context,
       'productId' : productId,
+      'sellerName' : sellerName,
+      'sellerUid' : sellerUid,
 
     };
   }
@@ -35,5 +41,7 @@ class ProductModel {
       category: json["category"],
       context: json["context"],
       productId: json["productId"],
+      sellerName: json["sellerName"],
+      sellerUid: json["sellerUid"],
     );
   }}

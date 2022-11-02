@@ -45,7 +45,10 @@ class _SellingScreenState extends State<SellingScreen> {
                           noteName: nameController.text,
                           s_cost: priceController.text,
                           category: valueChoose,
-                          context: contextController.text);
+                          context: contextController.text,
+                          sellerName: "김똘똘",
+                    //버튼 누르는 새끼 이름 가져오게 하는 코드 필요
+                  );
                 },
 
               child: const Text(

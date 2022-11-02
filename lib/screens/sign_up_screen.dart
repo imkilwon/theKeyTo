@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/resources/authentication_method.dart';
 import 'package:the_key_to/utils/constants.dart';
+import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/basic_button_widget.dart';
 import 'package:the_key_to/widgets/normal_text_field_widget.dart';
 
@@ -74,7 +75,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     password: passwordEditingController.text,
                     nickName : nickNameEditingController.text,
                   );
-                  if (output == "success") {
+                  Utils().showSnackBar(context: context, content: output);
+                  if (output == "회원가입 성공") {
                     Get.off(() => SignInScreen());
                   }
                 },

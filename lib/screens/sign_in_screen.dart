@@ -58,7 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       email: emailEditingController.text,
                       password: passwordEditingController.text);
                   Utils().showSnackBar(context: context, content: output);
-                  if(output == "success"){
+                  if(output == "로그인 성공"){
                     Get.offAll(()=>ScreenLayout());
                   }
                 //스낵바 위젯 추가하기

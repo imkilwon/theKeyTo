@@ -21,7 +21,7 @@ class AuthenticationMethods {
             email: email, password: password);
         final UserDetailsModel user = UserDetailsModel(name: nickName);
         await cloudFirestoreClass.uploadNickNameAndUidToDataBase(user: user);
-        output = "로그인 성공";
+        output = "회원가입 성공";
         //아이디랑 비밀번호 만들기 시도
       } on FirebaseAuthException catch (e) {
         output = e.message.toString();
@@ -44,7 +44,7 @@ class AuthenticationMethods {
       try {
         await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
-        output = "success";
+        output = "로그인 성공";
         //아이디랑 비밀번호로 로그인하기
       } on FirebaseAuthException catch (e) {
         output = e.message.toString();

@@ -23,6 +23,7 @@ class CloudFirestoreClass_ {
     required String s_cost,
     required String category,
     required String context,
+    required String sellerName,
   }) async {
     noteName.trim();
     s_cost.trim();
@@ -39,6 +40,8 @@ class CloudFirestoreClass_ {
           cost: cost,
           category: category,
           context: context,
+          sellerName: sellerName,
+          sellerUid: firebaseAuth.currentUser!.uid,
           productId: docProduct.id);
 
       await docProduct.set(product.getJson());
