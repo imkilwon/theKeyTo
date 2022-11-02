@@ -13,9 +13,8 @@ class CloudFirestoreClass_ {
 
   Future uploadNickNameAndUidToDataBase(
       {required UserDetailsModel user}) async {
-    final docUid = await firebaseFirestore.collection('users').doc();
-    user.userId = docUid.id;
-    docUid.set(user.getJson());
+    final docUid = await firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).set(user.getJson());
+    //문서id가 유저의 uid(고유)이고, 내용이 userDetailsModel인 data set을 업로드
   }
 
   Future<String> uploadNoteToDatabase({
