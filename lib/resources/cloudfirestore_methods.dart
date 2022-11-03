@@ -17,6 +17,16 @@ class CloudFirestoreClass_ {
     //문서id가 유저의 uid(고유)이고, 내용이 userDetailsModel인 data set을 업로드
   }
 
+  Map<String,dynamic>? readData(String code){
+    Map<String,dynamic>? data;
+    // final userdb = FirebaseFirestore.instance.collection("users").doc("$code");
+    final userdb = FirebaseFirestore.instance.collection("users").doc(code);
+    userdb.get().then((value) => {
+      data = value.data()
+    });
+    return data;
+  }
+
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
     required String noteName,

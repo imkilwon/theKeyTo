@@ -3,9 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
-import 'package:the_key_to/screens/selling_screen.dart';
-import 'package:the_key_to/screens/sign_up_screen.dart';
-import 'package:the_key_to/screens/product_detail_screen.dart';
+import 'package:the_key_to/screens/test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

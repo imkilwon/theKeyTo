@@ -12,28 +12,25 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
 
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title:Text("hi"),
       ),
-      body: Column(children: [
-        Text(""),
-      ],),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: (){
+            FirebaseFirestore.instance.collection("users").doc("mVCvIg5AB7cWUq6qkHJiZsljxrD2").get().then((value){
+              print(value.data()!['name']);
+            });
+          },
+          child: Text("읽어오기"),
+        )
+      )
     );
   }
 
-  Future getNameAndAddress() async {
-    DocumentSnapshot snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .get();
-
-    UserDetailsModel userModel = UserDetailsModel.getModelFromJson(
-      (snap.data() as dynamic),
-    );
-
-    return userModel;
-  }
 }

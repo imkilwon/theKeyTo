@@ -16,7 +16,6 @@ class SellingScreen extends StatefulWidget {
 
 class _SellingScreenState extends State<SellingScreen> {
   List<int> dates = [DateTime.now().year,DateTime.now().month,DateTime.now().day];
-
   Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();

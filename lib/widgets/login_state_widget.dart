@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
 
 class LoginStateWidget extends StatefulWidget {
@@ -36,7 +38,8 @@ class _LoginStateWidgetState extends State<LoginStateWidget> {
                 height: 20,
                 child: Image.asset("assets/images/user_profile.jpg"),
               ),
-              Text("",
+              Text("${CloudFirestoreClass_().readData("FirebaseAuth.instance.currentUser!.uid")?["name"]}",
+
                   //지금은 이메일인데 database uid 연동으로 이름 갖고오기
                   style:
                   const TextStyle(fontFamily: "NotoSans",fontWeight: FontWeight.w500),),
