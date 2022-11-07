@@ -51,6 +51,7 @@ class _SellingScreenState extends State<SellingScreen> {
                           dates:dates,
                     //버튼 누르는 새끼 이름 가져오게 하는 코드 필요
                   );
+                  print(output);
                 },
 
               child: const Text(

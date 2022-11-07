@@ -42,7 +42,7 @@ class CloudFirestoreClass_ {
 
     try {
       final docProduct = firebaseFirestore.collection('notes').doc();
-      String url =
+      String url = image==null ? 'https://firebasestorage.googleapis.com/v0/b/thekeyto-ba57d.appspot.com/o/notes%2F스크린샷%202022-11-07%20오후%201.10.35.png?alt=media&token=3e7ba29a-3430-4805-8c38-53fe197d1946' :
           await uploadImageToDatabase(image: image, uid: docProduct.id);
       int cost = int.parse(s_cost);
       final product = ProductModel(
