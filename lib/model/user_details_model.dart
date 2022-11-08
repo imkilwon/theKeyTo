@@ -2,14 +2,16 @@ class UserDetailsModel {
   String profile_image;
   //database에 들어갈 정보들
   final String name;
+  final String email;
 
-  UserDetailsModel({required this.name,this.profile_image = ''});
+  UserDetailsModel({required this.name,required this.email,this.profile_image = ''});
 
   Map<String, dynamic> getJson() => {
     'name': name,
+    'email':email,
   };
 
   factory UserDetailsModel.getModelFromJson(Map<String, dynamic> json) {
-    return UserDetailsModel(name: json["name"],profile_image: '');
+    return UserDetailsModel(name: json["name"],email: json["email"],profile_image: '');
   }
 }

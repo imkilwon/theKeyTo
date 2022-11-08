@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ class SellingScreen extends StatefulWidget {
 
 class _SellingScreenState extends State<SellingScreen> {
   List<int> dates = [DateTime.now().year,DateTime.now().month,DateTime.now().day];
+  final userNote = FirebaseFirestore.instance.collection('user-note');
   Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -52,6 +54,7 @@ class _SellingScreenState extends State<SellingScreen> {
                     //버튼 누르는 새끼 이름 가져오게 하는 코드 필요
                   );
                   print(output);
+                  //userNote.doc(FirebaseAuth.instance.currentUser!.uid).update()
                 },
 
               child: const Text(

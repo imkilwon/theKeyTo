@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
+import 'package:the_key_to/screens/delete_soon.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';

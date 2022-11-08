@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_key_to/widgets/display_book_widget.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 
 class EntranceExamScreen extends StatefulWidget {
   const EntranceExamScreen({Key? key}) : super(key: key);
@@ -9,27 +9,32 @@ class EntranceExamScreen extends StatefulWidget {
 }
 
 class _EntranceExamScreenState extends State<EntranceExamScreen> {
+  List<Widget> entranceExam=[];
+
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    List<Widget>? tmpEntrance =
+    await getProductsFromDiscount("입시 합격");
+    print("everything is done");
+    setState(() {
+      if (tmpEntrance != null){
+        entranceExam = tmpEntrance!;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-          DisplayBookWidget(),
-        ],
-      ),
+    return Scaffold(
+        body: ListView(
+          children: entranceExam,
+        )
     );
   }
 }

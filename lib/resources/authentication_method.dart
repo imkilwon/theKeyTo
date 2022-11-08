@@ -19,8 +19,13 @@ class AuthenticationMethods {
       try {
         await firebaseAuth.createUserWithEmailAndPassword(
             email: email, password: password);
-        final UserDetailsModel user = UserDetailsModel(name: nickName);
+        final UserDetailsModel user = UserDetailsModel(name: nickName,email:email);
+        //유저 정보를 저장하는 컬렉션 생성 후, 값 저장
         await cloudFirestoreClass.uploadNickNameAndUidToDataBase(user: user);
+
+
+
+
         output = "회원가입 성공";
         //아이디랑 비밀번호 만들기 시도
       } on FirebaseAuthException catch (e) {

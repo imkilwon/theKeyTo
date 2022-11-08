@@ -3,7 +3,9 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:the_key_to/model/user_details_model.dart';
+import 'package:the_key_to/widgets/simple_product_widget.dart';
 
 import '../model/product_model.dart';
 
@@ -17,15 +19,6 @@ class CloudFirestoreClass_ {
     //문서id가 유저의 uid(고유)이고, 내용이 userDetailsModel인 data set을 업로드
   }
 
-  Map<String,dynamic>? readData(String code){
-    Map<String,dynamic>? data;
-    // final userdb = FirebaseFirestore.instance.collection("users").doc("$code");
-    final userdb = FirebaseFirestore.instance.collection("users").doc(code);
-    userdb.get().then((value) => {
-      data = value.data()
-    });
-    return data;
-  }
 
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
@@ -42,8 +35,7 @@ class CloudFirestoreClass_ {
 
     try {
       final docProduct = firebaseFirestore.collection('notes').doc();
-      String url = image==null ? 'https://firebasestorage.googleapis.com/v0/b/thekeyto-ba57d.appspot.com/o/notes%2F스크린샷%202022-11-07%20오후%201.10.35.png?alt=media&token=3e7ba29a-3430-4805-8c38-53fe197d1946' :
-          await uploadImageToDatabase(image: image, uid: docProduct.id);
+      String url = await uploadImageToDatabase(image: image, uid: docProduct.id);
       int cost = int.parse(s_cost);
       final product = ProductModel(
           url: url,
@@ -85,4 +77,20 @@ Future<String> uploadImageToDatabase(
   UploadTask uploadTask = storageRef.putData(image!);
   TaskSnapshot task = await uploadTask;
   return task.ref.getDownloadURL();
+}
+
+Future<List<Widget>> getProductsFromDiscount(String category) async {
+  List<Widget> children = [];
+  QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
+      .collection("notes")
+      .where("category", isEqualTo: category)
+      .get();
+
+  for (int i = 0; i < snap.docs.length; i++) {
+    DocumentSnapshot docSnap = snap.docs[i];
+    ProductModel model =
+    ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
+    children.add(SimpleProductWidget(productModel: model));
+  }
+  return children;
 }
