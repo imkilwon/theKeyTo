@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
-import 'package:the_key_to/screens/test.dart';
+import 'package:the_key_to/screens/GetUserName.dart';
+import 'package:the_key_to/utils/utils.dart';
 
 class LoginStateWidget extends StatefulWidget {
 
@@ -25,24 +26,26 @@ class _LoginStateWidgetState extends State<LoginStateWidget> {
   @override
   Widget build(BuildContext context) {
     final bool isLogined = FirebaseAuth.instance.currentUser != null;//로그인 되어 있으면 true, 안 되어 있으면 false
+    Size screenSize = Utils().getScreenSize();
     return Container(
       child: isLogined ? Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: screenSize.width*0.01,
               ),
               Container(
                 width: 20,
                 height: 20,
-                child: Image.asset("assets/images/user_profile.jpg"),
+                child: Icon(Icons.account_circle,size: 30,),
               ),
-              GetUserName(FirebaseAuth.instance.currentUser!.uid),
-              const SizedBox(
-                width: 10,
+
+              SizedBox(
+                width: screenSize.width*0.05,
               ),
+              GetUserName(documentId: FirebaseAuth.instance.currentUser!.uid,width: screenSize.width*0.7,),
             ],
           ),
           IconButton(

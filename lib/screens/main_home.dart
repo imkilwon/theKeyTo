@@ -2,13 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
-import 'package:the_key_to/screens/delete_soon.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
+import 'package:the_key_to/screens/pass_certificate.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
-import 'package:the_key_to/screens/sign_in_screen.dart';
-import 'package:the_key_to/screens/product_detail_screen.dart';
 import 'package:the_key_to/utils/utils.dart';
-import 'package:the_key_to/widgets/display_book_widget.dart';
 
 import '../utils/constants.dart';
 
@@ -81,12 +78,7 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                   children: [
                     CoverLetterScreen(),
                     EntranceExamScreen(),
-                    Center(
-                      child: Text(
-                        "자격증",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+                    PassCertificateScreen(),
                   ],
                 ),
               ),

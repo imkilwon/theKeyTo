@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
 import 'package:the_key_to/screens/camera_ex.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
-import 'package:the_key_to/screens/test.dart';
+import 'package:the_key_to/screens/GetUserName.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

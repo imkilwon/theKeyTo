@@ -21,7 +21,6 @@ class _EntranceExamScreenState extends State<EntranceExamScreen> {
   void getData() async {
     List<Widget>? tmpEntrance =
     await getProductsFromDiscount("입시 합격");
-    print("everything is done");
     setState(() {
       if (tmpEntrance != null){
         entranceExam = tmpEntrance!;
