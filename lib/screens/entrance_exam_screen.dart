@@ -17,10 +17,15 @@ class _EntranceExamScreenState extends State<EntranceExamScreen> {
     super.initState();
     getData();
   }
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
 
   void getData() async {
     List<Widget>? tmpEntrance =
-    await getProductsFromDiscount("입시 합격");
+    await getProductsFromCategory("입시 합격");
     setState(() {
       if (tmpEntrance != null){
         entranceExam = tmpEntrance!;

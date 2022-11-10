@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:the_key_to/model/product_model.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/product_detail_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 
-class SimpleProductWidget extends StatelessWidget {
+class SimpleProductWidget extends StatefulWidget {
   final ProductModel productModel;
   const SimpleProductWidget({
     Key? key,
     required this.productModel,
   }) : super(key: key);
+
+  @override
+  State<SimpleProductWidget> createState() => _SimpleProductWidgetState();
+}
+
+class _SimpleProductWidgetState extends State<SimpleProductWidget> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,7 @@ class SimpleProductWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    ProductDetailScreen(productModel: productModel)));
+                    ProductDetailScreen(productModel: widget.productModel)));
       },
       child: Column(
         children: [
@@ -47,7 +55,7 @@ class SimpleProductWidget extends StatelessWidget {
                       //이미지가 들어갈 상자
                       width: screenSize.width * 0.4,
                       height: screenSize.width / 2,
-                      child: Image.network(productModel.url, fit: BoxFit.cover),
+                      child: Image.network(widget.productModel.url, fit: BoxFit.cover),
                     ),
                   ],
                 ),
@@ -62,7 +70,7 @@ class SimpleProductWidget extends StatelessWidget {
                       width: screenSize.width * 0.45,
                       height: screenSize.width * 0.1,
                       child: Text(
-                        productModel.productName,
+                        widget.productModel.productName,
                         style: TextStyle(
                             fontFamily: "Dalseo",
                             fontWeight: FontWeight.w300,
@@ -83,7 +91,7 @@ class SimpleProductWidget extends StatelessWidget {
                   SizedBox(
                       height: screenSize.width * 0.1,
                       child: Text(
-                        "₩ ${productModel.cost}",
+                        "₩ ${widget.productModel.cost}",
                         style: TextStyle(
                             fontFamily: "Dalseo",
                             fontWeight: FontWeight.w900,
@@ -99,11 +107,13 @@ class SimpleProductWidget extends StatelessWidget {
                           padding: const EdgeInsets.all(5.0),
                           child: InkWell(
                             child: Icon(Icons.favorite_border),
-                            onTap: () {},
+                            onTap: () {
+                              CloudFirestoreClass_().userFavorite(widget.productModel);
+                            },
                           ),
                         ),
                         Text(
-                          "${productModel.favorite}",
+                          "${widget.productModel.favorite}",
                           style: TextStyle(
                               fontFamily: "Dalseo",
                               fontWeight: FontWeight.w300,

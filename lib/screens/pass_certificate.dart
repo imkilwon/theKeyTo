@@ -17,14 +17,17 @@ class _PassCertificateScreenState extends State<PassCertificateScreen> {
     super.initState();
     getData();
   }
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
 
   void getData() async {
     List<Widget>? tmpPassCertificate =
-    await getProductsFromDiscount("자격증 합격");
+    await getProductsFromCategory("자격증 합격");
     setState(() {
-      if (tmpPassCertificate != null){
-        passCertificate = tmpPassCertificate!;
-      }
+      passCertificate = tmpPassCertificate;
     });
   }
 

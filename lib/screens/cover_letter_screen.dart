@@ -21,7 +21,7 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
 
   void getData() async {
     List<Widget>? tmpCoverLetter =
-    await getProductsFromDiscount("자기소개서 완성");
+    await getProductsFromCategory("자기소개서 완성");
     setState(() {
       if (tmpCoverLetter != null){
         coverLetter = tmpCoverLetter!;

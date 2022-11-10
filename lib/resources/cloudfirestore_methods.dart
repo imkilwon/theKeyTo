@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,6 +62,21 @@ class CloudFirestoreClass_ {
     }
     return output;
   }
+  void userFavorite(ProductModel productModel) async{
+    final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("favorite");
+    var check = await user.doc(productModel.productId).get();
+
+    if(check.exists== true){
+      //존재하면 ( 찜 함 )
+      user.doc(productModel.productId).delete();
+      //삭제하기 ( 찜 해제 )
+    }
+    else{
+      //존재하지 않으면 ( 찜 하지 않음 )
+      user.doc(productModel.productId).set(productModel.getJson());
+      //추가하기
+    }
+  }
 }
 
 Stream<List<ProductModel>> readProduct() {
@@ -79,7 +95,9 @@ Future<String> uploadImageToDatabase(
   return task.ref.getDownloadURL();
 }
 
-Future<List<Widget>> getProductsFromDiscount(String category) async {
+
+
+Future<List<Widget>> getProductsFromCategory(String category) async {
   List<Widget> children = [];
   QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
       .collection("notes")
