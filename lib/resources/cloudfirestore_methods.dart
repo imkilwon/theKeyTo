@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:the_key_to/model/user_details_model.dart';
 import 'package:the_key_to/widgets/simple_product_widget.dart';
 
@@ -62,19 +63,27 @@ class CloudFirestoreClass_ {
     }
     return output;
   }
-  void userFavorite(ProductModel productModel) async{
+  Future<String> userFavorite(ProductModel productModel) async{
     final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("favorite");
     var check = await user.doc(productModel.productId).get();
-
+    final test= firebaseFirestore.collection('notes').doc(productModel.productId);
     if(check.exists== true){
       //존재하면 ( 찜 함 )
       user.doc(productModel.productId).delete();
+      test.get().then((value) => {
+        firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])-1})
+      });
       //삭제하기 ( 찜 해제 )
+      return "찜 해제";
     }
     else{
       //존재하지 않으면 ( 찜 하지 않음 )
       user.doc(productModel.productId).set(productModel.getJson());
+      test.get().then((value) => {
+        firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])+1})
+      });
       //추가하기
+      return "찜 성공";
     }
   }
 }
