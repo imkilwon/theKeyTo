@@ -50,7 +50,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       children: [
                         IconButton(onPressed: (){
                         }, icon: Icon(Icons.favorite_border)),
-                        Text("${widget.productModel.favorite}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w300),),
                         IconButton(onPressed: (){}, icon: Icon(Icons.share)),
                       ],
                     )

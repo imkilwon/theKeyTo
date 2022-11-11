@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:the_key_to/model/product_model.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
@@ -19,9 +20,7 @@ class SimpleProductWidget extends StatefulWidget {
 
 class _SimpleProductWidgetState extends State<SimpleProductWidget> {
   CollectionReference favoriteCnt = FirebaseFirestore.instance.collection('notes');
-  bool favorite = false;
-
-
+  bool favorite = false;  
   @override
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
@@ -84,7 +83,7 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                       )),
                   SizedBox(
                       height: screenSize.width * 0.1,
-                      child: Text(
+                      child: const Text(
                         "제작자 이름",
                         style: TextStyle(
                             fontFamily: "Dalseo",
@@ -109,7 +108,7 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                         Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: InkWell(
-                            child: favorite ? Icon(Icons.favorite, color: Colors.red,) : Icon(Icons.favorite_border),
+                            child: favorite ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_border),
                             onTap: () async{
                                 final output = await CloudFirestoreClass_().userFavorite(widget.productModel);
                                 if(output == "찜 성공"){
@@ -124,13 +123,6 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                                 }
                             },
                           ),
-                        ),
-                        Text(
-                          "${widget.productModel.favorite}",
-                          style: TextStyle(
-                              fontFamily: "Dalseo",
-                              fontWeight: FontWeight.w300,
-                              fontSize: 20),
                         ),
                       ],
                     ),

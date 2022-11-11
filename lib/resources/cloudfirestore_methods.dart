@@ -63,6 +63,7 @@ class CloudFirestoreClass_ {
     }
     return output;
   }
+
   Future<String> userFavorite(ProductModel productModel) async{
     final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("favorite");
     var check = await user.doc(productModel.productId).get();
@@ -70,6 +71,7 @@ class CloudFirestoreClass_ {
     if(check.exists== true){
       //존재하면 ( 찜 함 )
       user.doc(productModel.productId).delete();
+      firebaseFirestore.collection('notes').doc(productModel.productId).collection('favorite_user').doc(firebaseAuth.currentUser!.uid).delete();
       test.get().then((value) => {
         firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])-1})
       });
@@ -79,6 +81,7 @@ class CloudFirestoreClass_ {
     else{
       //존재하지 않으면 ( 찜 하지 않음 )
       user.doc(productModel.productId).set(productModel.getJson());
+      firebaseFirestore.collection('notes').doc(productModel.productId).collection('favorite_user').doc(firebaseAuth.currentUser!.uid).set({"uid" : firebaseAuth.currentUser!.uid});
       test.get().then((value) => {
         firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])+1})
       });
