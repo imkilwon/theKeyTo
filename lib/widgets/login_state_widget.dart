@@ -45,7 +45,7 @@ class _LoginStateWidgetState extends State<LoginStateWidget> {
               SizedBox(
                 width: screenSize.width*0.05,
               ),
-              GetUserName(documentId: FirebaseAuth.instance.currentUser!.uid,width: screenSize.width*0.7,),
+              GetUserName(documentId: FirebaseAuth.instance.currentUser!.uid,width: screenSize.width*0.65,),
             ],
           ),
           IconButton(

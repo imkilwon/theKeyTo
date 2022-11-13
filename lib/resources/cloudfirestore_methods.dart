@@ -34,7 +34,7 @@ class CloudFirestoreClass_ {
     noteName.trim();
     s_cost.trim();
     String output = "Something went wrong";
-
+    final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("sell");
     try {
       final docProduct = firebaseFirestore.collection('notes').doc();
       String url = await uploadImageToDatabase(image: image, uid: docProduct.id);
@@ -56,7 +56,7 @@ class CloudFirestoreClass_ {
       );
 
       await docProduct.set(product.getJson());
-      await docProduct.set(product.getJson());
+      await user.doc(docProduct.id).set(product.getJson());
       output = "success";
     } catch (e) {
       output = e.toString();
