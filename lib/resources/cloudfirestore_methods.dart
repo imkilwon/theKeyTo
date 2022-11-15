@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,14 +24,14 @@ class CloudFirestoreClass_ {
 
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
-    required String noteName,
+    required String productName,
     required String s_cost,
     required String category,
     required String context,
     required String sellerName,
     required List<int> dates,
   }) async {
-    noteName.trim();
+    productName.trim();
     s_cost.trim();
     String output = "Something went wrong";
     final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("sell");
@@ -41,7 +41,7 @@ class CloudFirestoreClass_ {
       int cost = int.parse(s_cost);
       final product = ProductModel(
           url: url,
-          productName: noteName,
+          productName: productName,
           cost: cost,
           category: category,
           context: context,
@@ -88,6 +88,30 @@ class CloudFirestoreClass_ {
       //추가하기
       return "찜 성공";
     }
+  }
+
+  Future<String> UpdateNoteToFirebase ({
+    required Uint8List? image,
+    required String productName,
+    required String s_cost,
+    required String category,
+    required String context,
+    required String sellerName,
+    required List<int> dates,
+    required String id,
+  }) async{
+    productName.trim();
+    s_cost.trim();
+    String output = "Something went wrong";
+    int cost = int.parse(s_cost);
+    try {
+      final product = firebaseFirestore.collection('notes');
+      await product.doc(id).update({"name" : productName , "cost" : cost,"category" : category, "context" : context, "year" :dates[0] ,"month" : dates[1],"day" : dates[2]});
+      output = "success";
+    } catch (e) {
+      output = e.toString();
+    }
+    return output;
   }
 }
 

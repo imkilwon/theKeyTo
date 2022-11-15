@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_key_to/screens/sell_note.dart';
-import 'package:the_key_to/screens/selling_screen.dart';
+
+import 'package:the_key_to/screens/notes_on_sell_screen.dart';
 import 'package:the_key_to/screens/user_favorite_notes.dart';
 import 'package:the_key_to/widgets/guide_page_widget.dart';
 import 'package:the_key_to/widgets/login_state_widget.dart';
@@ -25,8 +25,8 @@ class _AccountScreenState extends State<AccountScreen> {
       body: Column(
         children: [
           SizedBox(height: screenSize.height*0.15,),
-          GuidePageWidget(pageName: "판매중인 노트", page: SellNotes()),
-          GuidePageWidget(pageName: "구매한 노트", page: SellingScreen()),
+          GuidePageWidget(pageName: "판매중인 노트", page:NotesOnSellScreen()),
+          GuidePageWidget(pageName: "구매한 노트", page: NotesOnSellScreen()),
           GuidePageWidget(pageName: "찜 목록", page: UserFavoriteNotes()),
         ],
       ),

@@ -96,7 +96,7 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                       children: [
                         IconButton(icon: Icon(Icons.add),onPressed: (){
                           if(FirebaseAuth.instance.currentUser!=null){
-                            Get.to(()=>SellingScreen());
+                            Get.to(()=>SellingScreen(update: false,));
                           }
                           else{
                             Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.");
