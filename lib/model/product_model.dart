@@ -11,6 +11,7 @@ class ProductModel {
   final int year;
   final int month;
   final int day;
+  
   String productId;
 
   ProductModel({

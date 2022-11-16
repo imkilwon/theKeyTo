@@ -51,3 +51,32 @@ class TheKeyTo extends StatelessWidget {
             }));
   }
 }
+class Test extends StatefulWidget {
+  const Test({Key? key}) : super(key: key);
+
+  @override
+  State<Test> createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  bool check = false;
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title:Text("하이ㅜ")
+      ),
+      body: IconButton(
+        onPressed: (){
+          setState(() {
+            check = !check;
+          });
+        },
+        icon: check ? Icon(Icons.favorite):Icon(Icons.favorite_border),
+      ),
+    );
+  }
+}

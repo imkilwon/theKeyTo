@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:the_key_to/screens/notes_on_sell_screen.dart';
+import 'package:the_key_to/screens/notice_screen.dart';
 import 'package:the_key_to/screens/user_favorite_notes.dart';
+import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/widgets/guide_page_widget.dart';
 import 'package:the_key_to/widgets/login_state_widget.dart';
 
@@ -28,6 +30,9 @@ class _AccountScreenState extends State<AccountScreen> {
           GuidePageWidget(pageName: "판매중인 노트", page:NotesOnSellScreen()),
           GuidePageWidget(pageName: "구매한 노트", page: NotesOnSellScreen()),
           GuidePageWidget(pageName: "찜 목록", page: UserFavoriteNotes()),
+          GuidePageWidget(pageName: '공지사항',page : NoticeScreen()),
+          GuidePageWidget(pageName: '고객 센터',page : NoticeScreen()),
+          GuidePageWidget(pageName: '이용약관 및 정책',page : NoticeScreen()),
         ],
       ),
     );

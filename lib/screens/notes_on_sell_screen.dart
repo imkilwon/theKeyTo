@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
@@ -13,8 +14,7 @@ class NotesOnSellScreen extends StatefulWidget {
 }
 
 class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
-  CollectionReference product = FirebaseFirestore.instance.collection('notes');
-
+  CollectionReference product = FirebaseFirestore.instance.collection('users');
   List<int> dates = [
     DateTime.now().year,
     DateTime.now().month,
@@ -39,7 +39,7 @@ class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
         title: const Text('판매중인 노트'),
       ),
       body: StreamBuilder(
-        stream: product.snapshots(),
+        stream: product.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
@@ -53,7 +53,7 @@ class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
                       EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
                   child: ListTile(
                     title: Text(documentSnapshot['productName']),
-                    subtitle: Text("${documentSnapshot['cost']}"),
+                    subtitle: Text(Utils().ShowPrice(price: "${documentSnapshot['cost']}")),
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
@@ -65,7 +65,9 @@ class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
                             icon: Icon(Icons.edit),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              product.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').doc(documentSnapshot['productId']).delete();
+                            },
                             icon: Icon(Icons.delete),
                           ),
                         ],

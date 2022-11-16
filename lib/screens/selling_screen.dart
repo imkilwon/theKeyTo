@@ -212,13 +212,14 @@ class _SellingScreenState extends State<SellingScreen> {
           onPressed: (){
 
             Get.back();
+
           },
         ),
         actions: [
           TextButton(
               onPressed: () async {
                 String output = await CloudFirestoreClass_().UpdateNoteToFirebase(image: image, productName: nameController.text, s_cost: priceController.text, category: valueChoose, context: contextController.text, sellerName: "김 머시깽이", dates: dates, id: widget.documentSnapshot!.id);
-                Get.offAll(()=>const NotesOnSellScreen());
+                Get.back();
                 //userNote.doc(FirebaseAuth.instance.currentUser!.uid).update()
               },
 

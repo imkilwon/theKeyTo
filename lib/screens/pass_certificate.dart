@@ -25,7 +25,7 @@ class _PassCertificateScreenState extends State<PassCertificateScreen> {
 
   void getData() async {
     List<Widget>? tmpPassCertificate =
-    await getProductsFromCategory("자격증 합격");
+    await CloudFirestoreClass_().getProductsFromCategory(("자격증 합격"));
     setState(() {
       passCertificate = tmpPassCertificate;
     });

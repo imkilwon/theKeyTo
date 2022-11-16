@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:the_key_to/model/product_model.dart';
+import 'package:the_key_to/screens/product_detail_screen.dart';
 import 'package:the_key_to/utils/utils.dart';
 
 class UserFavoriteNotes extends StatefulWidget {
@@ -36,11 +38,16 @@ class _UserFavoriteNotesState extends State<UserFavoriteNotes> {
                 itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot =
                   streamSnapshot.data!.docs[index];
-              return Card(
-                child: ListTile(
-                  leading: Image.network(documentSnapshot['url']),
-                  title: Text(documentSnapshot['productName']),
-                  subtitle: Text(documentSnapshot['cost'].toString()),
+              return InkWell(
+                onTap: (){
+                  Get.to(()=>ProductDetailScreen(productModel:ProductModel.getModelFromJson(json: (documentSnapshot.data() as dynamic))));
+                },
+                child: Card(
+                  child: ListTile(
+                    leading: Image.network(documentSnapshot['url']),
+                    title: Text(documentSnapshot['productName']),
+                    subtitle: Text("${documentSnapshot['cost'].toString()}원"),
+                  ),
                 ),
               );
             });

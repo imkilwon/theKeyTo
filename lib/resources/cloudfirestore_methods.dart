@@ -1,4 +1,3 @@
-
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,10 +16,12 @@ class CloudFirestoreClass_ {
 
   Future uploadNickNameAndUidToDataBase(
       {required UserDetailsModel user}) async {
-    final docUid = await firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).set(user.getJson());
+    final docUid = await firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .set(user.getJson());
     //문서id가 유저의 uid(고유)이고, 내용이 userDetailsModel인 data set을 업로드
   }
-
 
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
@@ -34,25 +35,29 @@ class CloudFirestoreClass_ {
     productName.trim();
     s_cost.trim();
     String output = "Something went wrong";
-    final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("sell");
+    final user = firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("sell");
     try {
       final docProduct = firebaseFirestore.collection('notes').doc();
-      String url = await uploadImageToDatabase(image: image, uid: docProduct.id);
+      String url =
+          await uploadImageToDatabase(image: image, uid: docProduct.id);
       int cost = int.parse(s_cost);
       final product = ProductModel(
-          url: url,
-          productName: productName,
-          cost: cost,
-          category: category,
-          context: context,
-          sellerName: sellerName,
-          sellerUid: firebaseAuth.currentUser!.uid,
-          productId: docProduct.id,
-          buyCnt: 0,
-          favorite: 0,
-          year: dates[0],
-         month: dates[1],
-          day: dates[2],
+        url: url,
+        productName: productName,
+        cost: cost,
+        category: category,
+        context: context,
+        sellerName: sellerName,
+        sellerUid: firebaseAuth.currentUser!.uid,
+        productId: docProduct.id,
+        buyCnt: 0,
+        favorite: 0,
+        year: dates[0],
+        month: dates[1],
+        day: dates[2],
       );
 
       await docProduct.set(product.getJson());
@@ -64,33 +69,52 @@ class CloudFirestoreClass_ {
     return output;
   }
 
-  Future<String> userFavorite(ProductModel productModel) async{
-    final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection("favorite");
+  Future<String> userFavorite(ProductModel productModel) async {
+    final user = firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("favorite");
     var check = await user.doc(productModel.productId).get();
-    final test= firebaseFirestore.collection('notes').doc(productModel.productId);
-    if(check.exists== true){
+    final test =
+        firebaseFirestore.collection('notes').doc(productModel.productId);
+    if (check.exists == true) {
       //존재하면 ( 찜 함 )
       user.doc(productModel.productId).delete();
-      firebaseFirestore.collection('notes').doc(productModel.productId).collection('favorite_user').doc(firebaseAuth.currentUser!.uid).delete();
+      firebaseFirestore
+          .collection('notes')
+          .doc(productModel.productId)
+          .collection('favorite_user')
+          .doc(firebaseAuth.currentUser!.uid)
+          .delete();
       test.get().then((value) => {
-        firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])-1})
-      });
+            firebaseFirestore
+                .collection('notes')
+                .doc(productModel.productId)
+                .update({'favorite': (value.data()!['favorite']) - 1})
+          });
       //삭제하기 ( 찜 해제 )
       return "찜 해제";
-    }
-    else{
-      //존재하지 않으면 ( 찜 하지 않음 )
+    } else {
+      //존재하지 않으면 ( 찜 하지 않은 상태 )
       user.doc(productModel.productId).set(productModel.getJson());
-      firebaseFirestore.collection('notes').doc(productModel.productId).collection('favorite_user').doc(firebaseAuth.currentUser!.uid).set({"uid" : firebaseAuth.currentUser!.uid});
+      firebaseFirestore
+          .collection('notes')
+          .doc(productModel.productId)
+          .collection('favorite_user')
+          .doc(firebaseAuth.currentUser!.uid)
+          .set({"uid": firebaseAuth.currentUser!.uid});
       test.get().then((value) => {
-        firebaseFirestore.collection('notes').doc(productModel.productId).update({'favorite': (value.data()!['favorite'])+1})
-      });
+            firebaseFirestore
+                .collection('notes')
+                .doc(productModel.productId)
+                .update({'favorite': (value.data()!['favorite']) + 1})
+          });
       //추가하기
       return "찜 성공";
     }
   }
 
-  Future<String> UpdateNoteToFirebase ({
+  Future<String> UpdateNoteToFirebase({
     required Uint8List? image,
     required String productName,
     required String s_cost,
@@ -99,20 +123,60 @@ class CloudFirestoreClass_ {
     required String sellerName,
     required List<int> dates,
     required String id,
-  }) async{
+  }) async {
     productName.trim();
     s_cost.trim();
     String output = "Something went wrong";
     int cost = int.parse(s_cost);
     try {
       final product = firebaseFirestore.collection('notes');
-      await product.doc(id).update({"name" : productName , "cost" : cost,"category" : category, "context" : context, "year" :dates[0] ,"month" : dates[1],"day" : dates[2]});
+      final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection('sell');
+      await product.doc(id).update({
+        "productName": productName,
+        "cost": cost,
+        "category": category,
+        "context": context,
+        "year": dates[0],
+        "month": dates[1],
+        "day": dates[2]
+      });
+      await user.doc(id).update({
+        "productName": productName,
+        "cost": cost,
+        "category": category,
+        "context": context,
+        "year": dates[0],
+        "month": dates[1],
+        "day": dates[2]
+      });
       output = "success";
     } catch (e) {
       output = e.toString();
     }
     return output;
   }
+
+  Future<List<Widget>> getProductsFromCategory(String category) async {
+    final user = firebaseFirestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection("favorite");
+    List<Widget> children = [];
+    QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
+        .collection("notes")
+        .where("category", isEqualTo: category)
+        .get();
+
+    for (int i = 0; i < snap.docs.length; i++) {
+      DocumentSnapshot docSnap = snap.docs[i];
+      ProductModel model =
+      ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
+      var check = await user.doc(model.productId).get();
+      children.add(SimpleProductWidget(productModel: model,favorite: check.exists,));
+    }
+    return children;
+  }
+
 }
 
 Stream<List<ProductModel>> readProduct() {
@@ -131,20 +195,3 @@ Future<String> uploadImageToDatabase(
   return task.ref.getDownloadURL();
 }
 
-
-
-Future<List<Widget>> getProductsFromCategory(String category) async {
-  List<Widget> children = [];
-  QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
-      .collection("notes")
-      .where("category", isEqualTo: category)
-      .get();
-
-  for (int i = 0; i < snap.docs.length; i++) {
-    DocumentSnapshot docSnap = snap.docs[i];
-    ProductModel model =
-    ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
-    children.add(SimpleProductWidget(productModel: model));
-  }
-  return children;
-}

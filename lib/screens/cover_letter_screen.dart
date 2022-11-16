@@ -21,13 +21,15 @@ class _CoverLetterScreenState extends State<CoverLetterScreen> {
 
   void getData() async {
     List<Widget>? tmpCoverLetter =
-    await getProductsFromCategory("자기소개서 완성");
+    await CloudFirestoreClass_().getProductsFromCategory(("자기소개서 완성"));
     setState(() {
       if (tmpCoverLetter != null){
         coverLetter = tmpCoverLetter!;
       }
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -9,8 +9,10 @@ import 'package:the_key_to/utils/utils.dart';
 
 class SimpleProductWidget extends StatefulWidget {
   final ProductModel productModel;
+  final bool favorite;
   const SimpleProductWidget({
     Key? key,
+    required this.favorite,
     required this.productModel,
   }) : super(key: key);
 
@@ -20,7 +22,19 @@ class SimpleProductWidget extends StatefulWidget {
 
 class _SimpleProductWidgetState extends State<SimpleProductWidget> {
   CollectionReference favoriteCnt = FirebaseFirestore.instance.collection('notes');
-  bool favorite = false;  
+
+  bool _isClicked = false;
+  bool _isFavorited = false;
+
+  // @override
+  // void initState(){
+  //   super.initState();
+  // }
+  // @override
+  // void dispose(){
+  //   super.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
@@ -93,7 +107,7 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                   SizedBox(
                       height: screenSize.width * 0.1,
                       child: Text(
-                        "₩ ${widget.productModel.cost}",
+                        "₩${Utils().ShowPrice(price: "${widget.productModel.cost}")}",
                         style: TextStyle(
                             fontFamily: "Dalseo",
                             fontWeight: FontWeight.w900,
@@ -107,22 +121,29 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(5.0),
-                          child: InkWell(
-                            child: favorite ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_border),
-                            onTap: () async{
-                                final output = await CloudFirestoreClass_().userFavorite(widget.productModel);
-                                if(output == "찜 성공"){
-                                  setState(() {
-                                    favorite = true;
-                                  });
-                                }
-                                else{
-                                  setState(() {
-                                    favorite = false;
-                                  });
-                                }
-                            },
-                          ),
+                          child: _isClicked ?
+                          InkWell(
+                            child: _isFavorited ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_border),
+                            onTap: ()async{
+                              //눌렸어? 눌렸으면
+                              String output = await CloudFirestoreClass_().userFavorite(widget.productModel);
+                              setState(() {
+                                _isFavorited = !_isFavorited;
+                              });
+                              print("!!");
+                            }
+                          ):InkWell(
+                              child: widget.favorite ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_border),
+                              onTap: ()async{
+                                //눌렸어? 눌렸으면
+                                String output = await CloudFirestoreClass_().userFavorite(widget.productModel);
+                                setState(() {
+                                  _isClicked = true;
+                                  _isFavorited = !widget.favorite;
+                                });
+                                print("??");
+                              }
+                          )
                         ),
                       ],
                     ),

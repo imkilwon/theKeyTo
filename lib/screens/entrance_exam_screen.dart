@@ -25,7 +25,7 @@ class _EntranceExamScreenState extends State<EntranceExamScreen> {
 
   void getData() async {
     List<Widget>? tmpEntrance =
-    await getProductsFromCategory("입시 합격");
+    await CloudFirestoreClass_().getProductsFromCategory("입시 합격");
     setState(() {
       if (tmpEntrance != null){
         entranceExam = tmpEntrance!;
