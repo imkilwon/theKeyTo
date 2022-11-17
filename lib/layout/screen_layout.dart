@@ -28,7 +28,7 @@ class _ScreenLayoutState extends State<ScreenLayout> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         body: PageView(
           physics: NeverScrollableScrollPhysics(),
@@ -47,7 +47,6 @@ class _ScreenLayoutState extends State<ScreenLayout> {
                 Tab(child: Icon(Icons.home_outlined, color: currentPage==0? appAccentColor : Colors.grey),),
                 Tab(child: Icon(Icons.book,color: currentPage==1? appAccentColor : Colors.grey),),
                 Tab(child: Icon(Icons.account_circle_outlined,color: currentPage==2? appAccentColor : Colors.grey),),
-                Tab(child: Icon(Icons.menu,color: currentPage==3? appAccentColor : Colors.grey),),
               ],
             ),
           ),

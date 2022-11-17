@@ -130,7 +130,6 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                               setState(() {
                                 _isFavorited = !_isFavorited;
                               });
-                              print("!!");
                             }
                           ):InkWell(
                               child: widget.favorite ? const Icon(Icons.favorite, color: Colors.red,) : const Icon(Icons.favorite_border),
@@ -141,7 +140,6 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                                   _isClicked = true;
                                   _isFavorited = !widget.favorite;
                                 });
-                                print("??");
                               }
                           )
                         ),
