@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
-import 'package:the_key_to/screens/camera_ex.dart';
-import 'package:the_key_to/screens/cover_letter_screen.dart';
-import 'package:the_key_to/screens/GetUserName.dart';
-import 'package:the_key_to/utils/constants.dart';
+import 'package:the_key_to/screens/seller_information_screen.dart';
 import 'package:the_key_to/utils/utils.dart';
 
 void main() async {
@@ -49,7 +46,7 @@ class TheKeyTo extends StatelessWidget {
                   ),
                 );
               } else {
-                return ScreenLayout(  );
+                return ScreenLayout();
               }
             }));
   }

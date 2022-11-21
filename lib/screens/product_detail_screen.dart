@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/product_model.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
+import 'package:the_key_to/screens/seller_information_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/basic_button_widget.dart';
@@ -21,6 +22,7 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+
 
   bool _isClicked = false;
   bool _isFavorited = false;
@@ -54,7 +56,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(onTap: (){
-
+                      Get.to(()=>SellerInformationScreen());
                     },child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
                     Row(
                       children: [

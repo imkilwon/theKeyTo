@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/user_details_model.dart';
+import 'package:the_key_to/widgets/information_screen_product_widget.dart';
 import 'package:the_key_to/widgets/simple_product_widget.dart';
 
 import '../model/product_model.dart';
@@ -172,6 +173,37 @@ class CloudFirestoreClass_ {
     return output;
   }
 
+
+  Future<List<Widget>> getProductsFromSeller(String uid) async{
+    bool _isExist =false;
+
+    //로그인 안 했으면 모두 false
+    List<Widget> children = [];
+    QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
+        .collection("notes")
+        .where("sellerUid", isEqualTo: uid)
+        .get();
+    //sellerUid가 같으면 가져옴
+
+    for (int i = 0; i < snap.docs.length; i++) {
+      DocumentSnapshot docSnap = snap.docs[i];
+      ProductModel model =
+      ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
+
+      if(firebaseAuth.currentUser != null){
+        //로그인 했으면
+        var check = await firebaseFirestore
+            .collection('users')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection("favorite").doc(model.productId).get();
+        _isExist = check.exists ;
+
+      }
+
+      children.add(InformationScreenProductWidget(productModel: model,favorite: _isExist));
+    }
+    return children;
+  }
 
   Future<List<Widget>> getProductsFromCategory(String category) async {
     bool _isExist =false;
