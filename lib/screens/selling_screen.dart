@@ -22,15 +22,31 @@ class SellingScreen extends StatefulWidget {
 
 class _SellingScreenState extends State<SellingScreen> {
   List<int> dates = [DateTime.now().year,DateTime.now().month,DateTime.now().day];
-  final userNote = FirebaseFirestore.instance.collection('user-note');
   Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
   TextEditingController contextController = TextEditingController();
-
+  String userName='';
   //선택한 값을 보여줄 변수
   String valueChoose = "카테고리 선택";
   final category = ["카테고리 선택", "자기소개서 완성", "입시 합격", "자격증 합격", "전자책", "기타"];
+
+  @override
+  void initState(){
+    super.initState();
+    getName();
+  }
+
+  void getName() {
+    Future name = CloudFirestoreClass_().getNameAndAddress();
+    name.then((val){
+      // int가 나오면 해당 값을 출력
+      userName= val;
+    }).catchError((error) {
+      // error가 해당 에러를 출력
+      userName =error;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,18 +69,34 @@ class _SellingScreenState extends State<SellingScreen> {
         actions: [
           TextButton(
               onPressed: () async {
-                String output = await CloudFirestoreClass_()
-                    .uploadNoteToDatabase(
-                  image: image,
-                  productName: nameController.text,
-                  s_cost: priceController.text,
-                  category: valueChoose,
-                  context: contextController.text,
-                  sellerName: "김똘똘",
-                  dates:dates,
-                  //버튼 누르는 새끼 이름 가져오게 하는 코드 필요
-                );
-                Get.offAll(()=>ScreenLayout());
+                if(valueChoose == "카테고리 선택") {
+                  Utils().showSnackBar(context: context, content: "카테고리를 선택해주세요.", error: true);
+                }
+                else if(image == null){
+                  Utils().showSnackBar(context: context, content: "이미지를 선택해주세요.", error: true );
+                }
+                else{
+                  String output = await CloudFirestoreClass_()
+                      .uploadNoteToDatabase(
+                    image: image,
+                    productName: nameController.text,
+                    s_cost: priceController.text,
+                    category: valueChoose,
+                    context: contextController.text,
+                    sellerName: userName,
+                    dates:dates,
+                    //버튼 누르는 사람 이름 가져오게 하는 코드 필요
+                  );
+                  if(output =="success"){
+                    Get.offAll(()=> const ScreenLayout());
+                  }
+                  else{
+                    if(priceController.text == '1'){
+
+                      Utils().showSnackBar(context: context, content: output, error : true);
+                    }
+                  }
+                }
                 //userNote.doc(FirebaseAuth.instance.currentUser!.uid).update()
               },
 

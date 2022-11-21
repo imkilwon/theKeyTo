@@ -13,28 +13,40 @@ class Utils{
   String getUid() {
     return (100000 + Random().nextInt(10000)).toString();
   }
-  showSnackBar({required BuildContext context, required String content}) {
+  showSnackBar({required BuildContext context, required String content,required bool error}) {
+    // context = context, content 스낵바 내용 , error = 에러인지 아닌지
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: appAccentColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
+        padding: const EdgeInsets.all(20),
+        duration: const Duration(milliseconds: 1000),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
         ),
-        content: SizedBox(
-          width: getScreenSize().width,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
+        content: error ? Row(
+          children: [
+            const Icon(
+              Icons.warning,
+              color: Colors.red,
+              size: 22,
+            ),
+            const SizedBox(
+              width: 7,
+            ),
+            Flexible(
+              child: Text(
                 content,
                 maxLines: 1,
-                overflow: TextOverflow.clip,
+                overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
+            ),
+          ],
+        ):
+        Text(
+          content,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

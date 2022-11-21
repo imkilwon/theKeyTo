@@ -3,9 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/camera_ex.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
 import 'package:the_key_to/screens/GetUserName.dart';
+import 'package:the_key_to/utils/constants.dart';
+import 'package:the_key_to/utils/utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +49,7 @@ class TheKeyTo extends StatelessWidget {
                   ),
                 );
               } else {
-                return ScreenLayout();
+                return ScreenLayout(  );
               }
             }));
   }
@@ -62,21 +65,35 @@ class _TestState extends State<Test> {
   bool check = false;
 
 
-
   @override
   Widget build(BuildContext context) {
+    Size screenSize = Utils().getScreenSize();
+    String _name ='?';
+    void check() {
+      // future 라는 변수에서 미래에(3초 후에) int가 나올 것입니다
+      Future name = CloudFirestoreClass_().getNameAndAddress();
+
+
+      name.then((val) {
+        // int가 나오면 해당 값을 출력
+        _name = val;
+      }).catchError((error) {
+        // error가 해당 에러를 출력
+        print('error: $error');
+      });
+
+      print('기다리는 중');
+    }
     return Scaffold(
       appBar: AppBar(
         title:Text("하이ㅜ")
       ),
-      body: IconButton(
+      body: ElevatedButton(
         onPressed: (){
-          setState(() {
-            check = !check;
-          });
+          check();
         },
-        icon: check ? Icon(Icons.favorite):Icon(Icons.favorite_border),
-      ),
+        child: Text(_name)
+      )
     );
   }
 }

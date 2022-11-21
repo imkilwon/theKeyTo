@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:the_key_to/screens/account_screen.dart';
 import 'package:the_key_to/screens/book_shelf_screen.dart';
 import 'package:the_key_to/screens/main_home.dart';
+import 'package:the_key_to/screens/main_order_screen.dart';
 import 'package:the_key_to/screens/product_detail_screen.dart';
 
 Color appAccentColor = Colors.white.withOpacity(0.8);
@@ -11,7 +12,7 @@ TextStyle officialTextStyle = const TextStyle(
 
 List<Widget> screens = [
   MainHome(),
-  BookShelfScreen(),
+  MainOrderScreen(),
   AccountScreen(),
 ];
 

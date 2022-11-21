@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/product_model.dart';
+import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/basic_button_widget.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final ProductModel productModel;
+  final bool favorite;
 
   const ProductDetailScreen(
       {Key? key,
-      required this.productModel})
+      required this.productModel,
+      required this.favorite,})
       : super(key: key);
 
   @override
@@ -18,6 +21,9 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
+
+  bool _isClicked = false;
+  bool _isFavorited = false;
   @override
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
@@ -26,7 +32,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           leading: IconButton(
             icon: Icon(Icons.chevron_left),
             onPressed: () {
-              Get.back();
+              // Get.back(closeOverlays: true);
+              Navigator.pop(context,_isClicked ? _isFavorited : widget.favorite);
+              //뒤로 가면서 눌렀으면 누른 이후의 _isFavorited 정보를 안눌렀으면 원래 받아온 favorite 정보를 전달해줌
             },
           ),
         ),
@@ -45,11 +53,48 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InkWell(onTap: (){},child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
+                    InkWell(onTap: (){
+
+                    },child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
                     Row(
                       children: [
-                        IconButton(onPressed: (){
-                        }, icon: Icon(Icons.favorite_border)),
+                        _isClicked
+                            ? InkWell(
+                            child: _isFavorited
+                                ? const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            )
+                                : const Icon(Icons.favorite_border),
+                            onTap: () async {
+                              //눌렸어? 눌렸으면
+                              String output = await CloudFirestoreClass_()
+                                  .userFavorite(widget.productModel);
+                              setState(() {
+                                _isFavorited = !_isFavorited;
+                                _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
+                              });
+                            })
+                            : InkWell(
+                          child: widget.favorite
+                              ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                              : const Icon(Icons.favorite_border),
+                          onTap: () async {
+                            //눌렸어? 눌렸으면
+                            String output = await CloudFirestoreClass_()
+                                .userFavorite(widget.productModel);
+                            setState(
+                                  () {
+                                _isClicked = true;
+                                _isFavorited = !widget.favorite;
+                                _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
+                              },
+                            );
+                          },
+                        ),
                         IconButton(onPressed: (){}, icon: Icon(Icons.share)),
                       ],
                     )

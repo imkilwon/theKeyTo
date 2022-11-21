@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/cover_letter_screen.dart';
 import 'package:the_key_to/screens/entrance_exam_screen.dart';
+import 'package:the_key_to/screens/main_order_screen.dart';
 import 'package:the_key_to/screens/pass_certificate.dart';
 import 'package:the_key_to/screens/selling_screen.dart';
 import 'package:the_key_to/utils/utils.dart';
@@ -99,7 +100,7 @@ class _MainHomeState extends State<MainHome> with TickerProviderStateMixin {
                             Get.to(()=>SellingScreen(update: false,));
                           }
                           else{
-                            Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.");
+                            Utils().showSnackBar(context: context, content: "로그인을 하셔야 합니다.",error: true);
                           }
                         },iconSize: 25,),
                         SizedBox(height: screenSize.height*0.025,),

@@ -23,6 +23,22 @@ class CloudFirestoreClass_ {
     //문서id가 유저의 uid(고유)이고, 내용이 userDetailsModel인 data set을 업로드
   }
 
+  Future getNameAndAddress() async {
+    DocumentSnapshot snap = await firebaseFirestore
+        .collection("users")
+        .doc(firebaseAuth.currentUser!.uid)
+        .get();
+    //snap에 doc의 정보를 가져옴
+
+    UserDetailsModel userModel = UserDetailsModel.getModelFromJson(
+      (snap.data() as dynamic),
+      //snap에 가져온 doc 정보를 dynamic 형태로 바꿔서 userModel 생성
+    );
+
+    return userModel.name;
+  }
+
+
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
     required String productName,
@@ -156,11 +172,11 @@ class CloudFirestoreClass_ {
     return output;
   }
 
+
   Future<List<Widget>> getProductsFromCategory(String category) async {
-    final user = firebaseFirestore
-        .collection('users')
-        .doc(firebaseAuth.currentUser!.uid)
-        .collection("favorite");
+    bool _isExist =false;
+
+    //로그인 안 했으면 모두 false
     List<Widget> children = [];
     QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
         .collection("notes")
@@ -171,8 +187,18 @@ class CloudFirestoreClass_ {
       DocumentSnapshot docSnap = snap.docs[i];
       ProductModel model =
       ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
-      var check = await user.doc(model.productId).get();
-      children.add(SimpleProductWidget(productModel: model,favorite: check.exists,));
+
+      if(firebaseAuth.currentUser != null){
+        //로그인 했으면
+        var check = await firebaseFirestore
+            .collection('users')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection("favorite").doc(model.productId).get();
+        _isExist = check.exists ;
+
+      }
+
+      children.add(SimpleProductWidget(productModel: model,favorite: _isExist));
     }
     return children;
   }

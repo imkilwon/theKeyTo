@@ -75,8 +75,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     password: passwordEditingController.text,
                     nickName : nickNameEditingController.text,
                   );
-                  Utils().showSnackBar(context: context, content: output);
                   if (output == "회원가입 성공") {
+                    Utils().showSnackBar(context: context, content: output,error: false);
                     Get.off(() => SignInScreen());
                   }
                 },

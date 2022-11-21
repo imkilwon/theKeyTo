@@ -14,14 +14,14 @@ class NotesOnSellScreen extends StatefulWidget {
 }
 
 class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
-  CollectionReference product = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
   List<int> dates = [
     DateTime.now().year,
     DateTime.now().month,
     DateTime.now().day
   ];
 
-  final userNote = FirebaseFirestore.instance.collection('user-note');
+  final notes = FirebaseFirestore.instance.collection('notes');
   Uint8List? image;
   TextEditingController nameController = TextEditingController();
   TextEditingController priceController = TextEditingController();
@@ -39,7 +39,7 @@ class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
         title: const Text('판매중인 노트'),
       ),
       body: StreamBuilder(
-        stream: product.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').snapshots(),
+        stream: users.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
@@ -66,7 +66,9 @@ class _NotesOnSellScreenState extends State<NotesOnSellScreen> {
                           ),
                           IconButton(
                             onPressed: () {
-                              product.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').doc(documentSnapshot['productId']).delete();
+                              Utils().showSnackBar(context: context, content: "${documentSnapshot['productName']}을(를) 삭제했습니다.",error: false);
+                              users.doc(FirebaseAuth.instance.currentUser!.uid).collection('sell').doc(documentSnapshot['productId']).delete();
+                              notes.doc(documentSnapshot['productId']).delete();
                             },
                             icon: Icon(Icons.delete),
                           ),

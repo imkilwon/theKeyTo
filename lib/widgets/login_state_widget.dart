@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
+import 'package:the_key_to/screens/main_sign_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
 import 'package:the_key_to/screens/GetUserName.dart';
 import 'package:the_key_to/utils/utils.dart';
@@ -60,7 +61,7 @@ class _LoginStateWidgetState extends State<LoginStateWidget> {
         ],
       ):GestureDetector(
         onTap: (){
-          Get.to(()=>SignInScreen());
+          Get.to(()=>MainSignScreen());
         },
         child: Container(
           width: double.infinity,

@@ -40,7 +40,7 @@ class _UserFavoriteNotesState extends State<UserFavoriteNotes> {
                   streamSnapshot.data!.docs[index];
               return InkWell(
                 onTap: (){
-                  Get.to(()=>ProductDetailScreen(productModel:ProductModel.getModelFromJson(json: (documentSnapshot.data() as dynamic))));
+                  Get.to(()=>ProductDetailScreen(productModel:ProductModel.getModelFromJson(json: (documentSnapshot.data() as dynamic)),favorite: true,));
                 },
                 child: Card(
                   child: ListTile(
