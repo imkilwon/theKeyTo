@@ -59,26 +59,17 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 15),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: appAccentColor,
-                      ),
-                      width: screenSize.width * 0.44,
-                      height: screenSize.width * 0.54,
-                    ),
+                padding: const EdgeInsets.only(top:8,left: 8.0, right: 15),
+                child:
                     Container(
                       //이미지가 들어갈 상자
                       width: screenSize.width * 0.4,
                       height: screenSize.width / 2,
-                      child: Image.network(widget.productModel.url,
-                          fit: BoxFit.cover),
-                    ),
-                  ],
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(widget.productModel.url,
+                            fit: BoxFit.cover),
+                      ),
                 ),
               ),
               Column(
