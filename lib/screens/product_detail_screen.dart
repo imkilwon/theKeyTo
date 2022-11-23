@@ -56,7 +56,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(onTap: (){
-                      Get.to(()=>SellerInformationScreen());
+                      Get.to(()=>SellerInformationScreen(sellerName: widget.productModel.sellerName,));
                     },child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
                     Row(
                       children: [

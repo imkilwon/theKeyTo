@@ -6,7 +6,8 @@ import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
 
 class SellerInformationScreen extends StatefulWidget {
-  const SellerInformationScreen({Key? key}) : super(key: key);
+  final String sellerName;
+  const SellerInformationScreen({Key? key,required this.sellerName}) : super(key: key);
 
   @override
   State<SellerInformationScreen> createState() =>
@@ -46,7 +47,7 @@ class _SellerInformationScreenState extends State<SellerInformationScreen> {
                   Container(
                     width: screenSize.width * 0.25,
                     child: Text(
-                      "이름",
+                      "${widget.sellerName}",
                       style: TextStyle(fontSize: screenSize.width * 0.06),
                     ),
                   ),

@@ -24,7 +24,7 @@ class GuidePageWidget extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left : 20.0),
-                  child: Text("${pageName}",style: TextStyle(fontSize: 30,fontFamily: 'Dalseo',fontWeight: FontWeight.w300),),
+                  child: Text("${pageName}",style: TextStyle(fontSize: 20,fontFamily: 'Dalseo',fontWeight: FontWeight.w500),),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right:15.0),
