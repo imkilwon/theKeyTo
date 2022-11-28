@@ -41,14 +41,19 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
   Widget build(BuildContext context) {
     Size screenSize = Utils().getScreenSize();
     return GestureDetector(
-      onTap: () async{
-        bool refresh = await Get.to(() => ProductDetailScreen(productModel: widget.productModel,favorite: _isClicked ?_isFavorited: widget.favorite,));
+      onTap: () async {
+        bool refresh = await Get.to(() => ProductDetailScreen(
+              productModel: widget.productModel,
+              favorite: _isClicked ? _isFavorited : widget.favorite,
+            ));
         //디테일 화면으로 넘어간 이후 돌아왔다면, refresh에 받아온 값을 저장
-        setState(() {
-          _isClicked = true;
-          _isFavorited = refresh;
-          //저장한 값을 _isFavorited에 적용
-        });
+        if (this.mounted) {
+          setState(() {
+            _isClicked = true;
+            _isFavorited = refresh;
+            //저장한 값을 _isFavorited에 적용
+          });
+        }
       },
       child: Column(
         children: [
@@ -59,17 +64,16 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top:8,left: 8.0, right: 15),
-                child:
-                    Container(
-                      //이미지가 들어갈 상자
-                      width: screenSize.width * 0.4,
-                      height: screenSize.width / 2,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(widget.productModel.url,
-                            fit: BoxFit.cover),
-                      ),
+                padding: const EdgeInsets.only(top: 8, left: 8.0, right: 15),
+                child: Container(
+                  //이미지가 들어갈 상자
+                  width: screenSize.width * 0.4,
+                  height: screenSize.width / 2,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(widget.productModel.url,
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
               Column(
@@ -93,7 +97,7 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                       )),
                   SizedBox(
                       height: screenSize.width * 0.1,
-                      child:Text(
+                      child: Text(
                         widget.productModel.sellerName,
                         style: const TextStyle(
                             fontFamily: "Dalseo",
@@ -129,10 +133,14 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                                 //눌렸어? 눌렸으면
                                 String output = await CloudFirestoreClass_()
                                     .userFavorite(widget.productModel);
-                                setState(() {
-                                  _isFavorited = !_isFavorited;
-                                  _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
-                                });
+                                if(output == "성공" || output == "해제"){
+                                  setState(() {
+                                    _isFavorited = !_isFavorited;
+                                    _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
+                                  });
+                                }else{
+                                  Utils().showSnackBar(context: context, content: output, error: true);
+                                }
                               })
                               : InkWell(
                             child: widget.favorite
@@ -145,13 +153,15 @@ class _SimpleProductWidgetState extends State<SimpleProductWidget> {
                               //눌렸어? 눌렸으면
                               String output = await CloudFirestoreClass_()
                                   .userFavorite(widget.productModel);
-                              setState(
-                                    () {
+                              if(output == "성공" || output == "해제"){
+                                setState(() {
                                   _isClicked = true;
                                   _isFavorited = !widget.favorite;
                                   _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
-                                },
-                              );
+                                });
+                              }else{
+                                Utils().showSnackBar(context: context, content: output, error: true);
+                              }
                             },
                           ),
                         ),

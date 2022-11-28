@@ -55,8 +55,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    InkWell(onTap: (){
-                      Get.to(()=>SellerInformationScreen(sellerName: widget.productModel.sellerName,sellerUid: widget.productModel.sellerUid,));
+                    InkWell(onTap: ()async{
+                      final bool isFollowed = await CloudFirestoreClass_().checkFollow(widget.productModel.sellerUid);
+                      print("$isFollowed");
+                      Get.to(() => SellerInformationScreen(sellerName: widget.productModel.sellerName,sellerUid: widget.productModel.sellerUid,isFollowed: isFollowed,));
+                      //디테일 화면으로 넘어간 이후 돌아왔다면, refresh에 받아온 값을 저장
                     },child: Text("${widget.productModel.sellerName} >",style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300,fontFamily: "Dalseo",color: appAccentColor),)),
                     Row(
                       children: [
@@ -72,10 +75,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               //눌렸어? 눌렸으면
                               String output = await CloudFirestoreClass_()
                                   .userFavorite(widget.productModel);
-                              setState(() {
-                                _isFavorited = !_isFavorited;
-                                _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
-                              });
+                              if(output == "성공" || output == "해제"){
+                                setState(() {
+                                  _isFavorited = !_isFavorited;
+                                  _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
+                                });
+                              }else{
+                                Utils().showSnackBar(context: context, content: output, error: true);
+                              }
                             })
                             : InkWell(
                           child: widget.favorite
@@ -88,13 +95,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             //눌렸어? 눌렸으면
                             String output = await CloudFirestoreClass_()
                                 .userFavorite(widget.productModel);
-                            setState(
-                                  () {
+                            if(output == "성공" || output == "해제"){
+                              setState(() {
                                 _isClicked = true;
                                 _isFavorited = !widget.favorite;
                                 _isFavorited? Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 하였습니다.", error: false) : Utils().showSnackBar(context: context, content: "${widget.productModel.productName}을(를) 찜 해제하였습니다.", error: false);
-                              },
-                            );
+                              });
+                            }else{
+                              Utils().showSnackBar(context: context, content: output, error: true);
+                            }
                           },
                         ),
                         IconButton(onPressed: (){}, icon: Icon(Icons.share)),

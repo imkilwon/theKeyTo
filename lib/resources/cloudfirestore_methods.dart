@@ -39,7 +39,6 @@ class CloudFirestoreClass_ {
     return userModel.name;
   }
 
-
   Future<String> uploadNoteToDatabase({
     required Uint8List? image,
     required String productName,
@@ -87,6 +86,12 @@ class CloudFirestoreClass_ {
   }
 
   Future<String> userFavorite(ProductModel productModel) async {
+    if(firebaseAuth.currentUser == null){
+      return "로그인을 하셔야 합니다.";
+    }
+    if(productModel.sellerUid == firebaseAuth.currentUser!.uid){
+      return "자신의 상품은 찜할 수 없습니다.";
+    }
     final user = firebaseFirestore
         .collection('users')
         .doc(firebaseAuth.currentUser!.uid)
@@ -110,7 +115,7 @@ class CloudFirestoreClass_ {
                 .update({'favorite': (value.data()!['favorite']) - 1})
           });
       //삭제하기 ( 찜 해제 )
-      return "찜 해제";
+      return "성공";
     } else {
       //존재하지 않으면 ( 찜 하지 않은 상태 )
       user.doc(productModel.productId).set(productModel.getJson());
@@ -127,7 +132,34 @@ class CloudFirestoreClass_ {
                 .update({'favorite': (value.data()!['favorite']) + 1})
           });
       //추가하기
-      return "찜 성공";
+      return "해제";
+    }
+  }
+
+  Future<String> userFollow(String sellerId) async {
+    if (firebaseAuth.currentUser == null) {
+      return "로그인을 하셔야 합니다.";
+    } else {
+      if (firebaseAuth.currentUser!.uid == sellerId) {
+        return "자기 자신을 팔로우 할 수 없습니다.";
+      } else {
+        final user = firebaseFirestore
+            .collection('users')
+            .doc(firebaseAuth.currentUser!.uid)
+            .collection("follow");
+        var check = await user.doc(sellerId).get();
+        if (check.exists == true) {
+          //존재하면 ( 이미 팔로우 함 )
+          user.doc(sellerId).delete();
+          //삭제하기 ( 찜 해제 )
+          return "팔로우 해제";
+        } else {
+          //존재하지 않으면 ( 찜 하지 않은 상태 )
+          user.doc(sellerId).set({"sellerId": sellerId});
+          //추가하기
+          return "팔로우 성공";
+        }
+      }
     }
   }
 
@@ -147,7 +179,10 @@ class CloudFirestoreClass_ {
     int cost = int.parse(s_cost);
     try {
       final product = firebaseFirestore.collection('notes');
-      final user = firebaseFirestore.collection('users').doc(firebaseAuth.currentUser!.uid).collection('sell');
+      final user = firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('sell');
       await product.doc(id).update({
         "productName": productName,
         "cost": cost,
@@ -173,9 +208,8 @@ class CloudFirestoreClass_ {
     return output;
   }
 
-
-  Future<List<Widget>> getProductsFromSeller(String uid) async{
-    bool _isExist =false;
+  Future<List<Widget>> getProductsFromSeller(String uid) async {
+    bool _isExist = false;
 
     //로그인 안 했으면 모두 false
     List<Widget> children = [];
@@ -188,53 +222,75 @@ class CloudFirestoreClass_ {
     for (int i = 0; i < snap.docs.length; i++) {
       DocumentSnapshot docSnap = snap.docs[i];
       ProductModel model =
-      ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
+          ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
 
-      if(firebaseAuth.currentUser != null){
+      if (firebaseAuth.currentUser != null) {
         //로그인 했으면
         var check = await firebaseFirestore
             .collection('users')
             .doc(firebaseAuth.currentUser!.uid)
-            .collection("favorite").doc(model.productId).get();
-        _isExist = check.exists ;
-
+            .collection("favorite")
+            .doc(model.productId)
+            .get();
+        _isExist = check.exists;
       }
 
-      children.add(InformationScreenProductWidget(productModel: model,favorite: _isExist));
+      children.add(InformationScreenProductWidget(
+          productModel: model, favorite: _isExist));
     }
     return children;
   }
 
   Future<List<Widget>> getProductsFromCategory(String category) async {
-    bool _isExist =false;
-
+    bool _isExist = false;
     //로그인 안 했으면 모두 false
     List<Widget> children = [];
     QuerySnapshot<Map<String, dynamic>> snap = await FirebaseFirestore.instance
         .collection("notes")
         .where("category", isEqualTo: category)
         .get();
-
     for (int i = 0; i < snap.docs.length; i++) {
       DocumentSnapshot docSnap = snap.docs[i];
       ProductModel model =
-      ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
+          ProductModel.getModelFromJson(json: (docSnap.data() as dynamic));
 
-      if(firebaseAuth.currentUser != null){
-        //로그인 했으면
-        var check = await firebaseFirestore
-            .collection('users')
-            .doc(firebaseAuth.currentUser!.uid)
-            .collection("favorite").doc(model.productId).get();
-        _isExist = check.exists ;
-
-      }
-
-      children.add(SimpleProductWidget(productModel: model,favorite: _isExist));
+      children.add(SimpleProductWidget(
+          productModel: model, favorite: await checkFavorite(model.productId)));
     }
     return children;
   }
 
+  Future<bool> checkFavorite(String productId) async {
+    if (firebaseAuth.currentUser != null) {
+      //로그인 했으면 이 부분으로 들어옴
+      var check = await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection("favorite")
+          .doc(productId)
+          .get();
+      bool isExist = check.exists;
+      return isExist; //있으면 true 없으면 false 전달
+    } else {
+      return false; //로그인 안 했으면 무조건 false
+    }
+  }
+
+  Future<bool> checkFollow(String sellerId) async {
+    if (firebaseAuth.currentUser != null) {
+      //로그인 했으면 이 부분으로 들어옴
+      var check = await firebaseFirestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection("follow")
+          .doc(sellerId)
+          .get();
+      bool isExist = check.exists;
+      return isExist; //있으면 true 없으면 false 전달
+    } else {
+      return false; //로그인 안 했으면 무조건 false
+    }
+  }
 }
 
 Stream<List<ProductModel>> readProduct() {
@@ -252,4 +308,3 @@ Future<String> uploadImageToDatabase(
   TaskSnapshot task = await uploadTask;
   return task.ref.getDownloadURL();
 }
-

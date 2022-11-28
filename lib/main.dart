@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 import 'package:the_key_to/screens/seller_information_screen.dart';
+import 'package:the_key_to/screens/send_order_to_individual_screen.dart';
 import 'package:the_key_to/utils/utils.dart';
 
 void main() async {
@@ -46,11 +47,12 @@ class TheKeyTo extends StatelessWidget {
                   ),
                 );
               } else {
-                return ScreenLayout();
+                return const ScreenLayout();
               }
             }));
   }
 }
+
 class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
 
@@ -61,36 +63,38 @@ class Test extends StatefulWidget {
 class _TestState extends State<Test> {
   bool check = false;
 
-
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils().getScreenSize();
-    String _name ='?';
-    void check() {
-      // future 라는 변수에서 미래에(3초 후에) int가 나올 것입니다
-      Future name = CloudFirestoreClass_().getNameAndAddress();
-
-
-      name.then((val) {
-        // int가 나오면 해당 값을 출력
-        _name = val;
-      }).catchError((error) {
-        // error가 해당 에러를 출력
-        print('error: $error');
-      });
-
-      print('기다리는 중');
-    }
     return Scaffold(
-      appBar: AppBar(
-        title:Text("하이ㅜ")
+      appBar: AppBar(title: Text("ClipRRect")),
+      body: Column(
+        children: [
+          Center(
+              child: Text(
+            "Image를 Container로 감싼 후,\nContainer에 BorderRadius주기",
+            style: TextStyle(fontSize: 20),
+          )),
+          Container(
+            width: 150,
+            height: 150,
+            child: Image.asset('assets/images/user_profile.jpg'),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          Center(
+              child: Text(
+            "Image를 Container로 감싼 후,\nContainer에 BorderRadius주기",
+            style: TextStyle(fontSize: 20),
+          )),
+          Container(
+              width: 150,
+              height: 150,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.asset('assets/images/user_profile.jpg'))),
+        ],
       ),
-      body: ElevatedButton(
-        onPressed: (){
-          check();
-        },
-        child: Text(_name)
-      )
     );
   }
 }
