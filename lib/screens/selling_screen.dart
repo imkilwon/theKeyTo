@@ -1,11 +1,8 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/layout/screen_layout.dart';
-import 'package:the_key_to/screens/main_home.dart';
-import 'package:the_key_to/screens/notes_on_sell_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/widgets/normal_text_field_widget.dart';
 import '../resources/cloudfirestore_methods.dart';
@@ -51,17 +48,17 @@ class _SellingScreenState extends State<SellingScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return widget.update ? UpdateNote(screenSize): UploadNote(screenSize) ;
+    return widget.update ? updateNote(screenSize): uploadNote(screenSize) ;
   }
 
 
 
-  Widget UploadNote ( Size screenSize ){
+  Widget uploadNote ( Size screenSize ){
     return Scaffold(
       appBar: AppBar(
-        title: Text("판매 글 작성"),
+        title: const Text("판매 글 작성"),
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: () {
             Get.back();
           },
@@ -80,7 +77,7 @@ class _SellingScreenState extends State<SellingScreen> {
                       .uploadNoteToDatabase(
                     image: image,
                     productName: nameController.text,
-                    s_cost: priceController.text,
+                    sCost: priceController.text,
                     category: valueChoose,
                     context: contextController.text,
                     sellerName: userName,
@@ -92,7 +89,6 @@ class _SellingScreenState extends State<SellingScreen> {
                   }
                   else{
                     if(priceController.text == '1'){
-
                       Utils().showSnackBar(context: context, content: output, error : true);
                     }
                   }
@@ -113,10 +109,10 @@ class _SellingScreenState extends State<SellingScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
-            Container(
+            SizedBox(
               height: screenSize.height / 8,
               child: Stack(
                 children: [
@@ -138,11 +134,11 @@ class _SellingScreenState extends State<SellingScreen> {
                           });
                         }
                       },
-                      icon: Icon(Icons.file_upload))
+                      icon: const Icon(Icons.file_upload))
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //이름 적는 곳
@@ -154,20 +150,20 @@ class _SellingScreenState extends State<SellingScreen> {
                 width: screenSize.width * 0.95,
                 height: screenSize.height / 15,
                 obscureText: false),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //카테고리 선택
             SizedBox(
               width: screenSize.width * 0.9,
               child: DropdownButton(
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontFamily: "NotoSans",
                     fontWeight: FontWeight.w500),
                 isExpanded: true,
                 value: valueChoose,
-                underline: SizedBox(),
+                underline: const SizedBox(),
                 icon: const Icon(Icons.arrow_drop_down_outlined),
                 iconSize: 30,
                 items: category.map((String items) {
@@ -183,7 +179,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 },
               ),
             ),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //가격 적는 곳
@@ -195,7 +191,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 width: screenSize.width * 0.95,
                 height: screenSize.height / 15,
                 obscureText: false),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             SizedBox(
@@ -206,7 +202,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 controller: contextController,
                 decoration: InputDecoration(
                   labelStyle: officialTextStyle,
-                  label: Text("내용"),
+                  label: const Text("내용"),
                   hintText: "여러분의 비결을 소개해주세요!(사실과 글이 다를 시 게시가 제한될 수 있습니다.)",
                   hintStyle: const TextStyle(
                       fontSize: 18,
@@ -231,7 +227,7 @@ class _SellingScreenState extends State<SellingScreen> {
     );
   }
 //==========================================================================================================
-  Widget UpdateNote( Size screenSize ){
+  Widget updateNote( Size screenSize ){
     nameController.text = widget.documentSnapshot!['productName'];
     priceController.text = "${widget.documentSnapshot!['cost']}";
     contextController.text = widget.documentSnapshot!['context'];
@@ -240,7 +236,7 @@ class _SellingScreenState extends State<SellingScreen> {
       appBar: AppBar(
         title: Text("${widget.documentSnapshot!['productName']} 수정"),
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: (){
 
             Get.back();
@@ -250,9 +246,9 @@ class _SellingScreenState extends State<SellingScreen> {
         actions: [
           TextButton(
               onPressed: () async {
-                String output = await CloudFirestoreClass_().UpdateNoteToFirebase(image: image, productName: nameController.text, s_cost: priceController.text, category: valueChoose, context: contextController.text, sellerName: "김 머시깽이", dates: dates, id: widget.documentSnapshot!.id);
+                String output = await CloudFirestoreClass_().UpdateNoteToFirebase(image: image, productName: nameController.text, sCost: priceController.text, category: valueChoose, context: contextController.text, sellerName: "김 머시깽이", dates: dates, id: widget.documentSnapshot!.id);
                 Get.back();
-                //userNote.doc(FirebaseAuth.instance.currentUser!.uid).update()
+                Utils().showSnackBar(context: context, content: output, error: false);
               },
 
               child: const Text(
@@ -268,10 +264,10 @@ class _SellingScreenState extends State<SellingScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
-            Container(
+            SizedBox(
               height: screenSize.height / 8,
               child: Stack(
                 children: [
@@ -293,11 +289,11 @@ class _SellingScreenState extends State<SellingScreen> {
                           });
                         }
                       },
-                      icon: Icon(Icons.file_upload))
+                      icon: const Icon(Icons.file_upload))
                 ],
               ),
             ),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //이름 적는 곳
@@ -309,20 +305,20 @@ class _SellingScreenState extends State<SellingScreen> {
                 width: screenSize.width * 0.95,
                 height: screenSize.height / 15,
                 obscureText: false),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //카테고리 선택
             SizedBox(
               width: screenSize.width * 0.9,
               child: DropdownButton(
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 18,
                     fontFamily: "NotoSans",
                     fontWeight: FontWeight.w500),
                 isExpanded: true,
                 value: valueChoose,
-                underline: SizedBox(),
+                underline: const SizedBox(),
                 icon: const Icon(Icons.arrow_drop_down_outlined),
                 iconSize: 30,
                 items: category.map((String items) {
@@ -338,7 +334,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 },
               ),
             ),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             //가격 적는 곳
@@ -350,7 +346,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 width: screenSize.width * 0.95,
                 height: screenSize.height / 15,
                 obscureText: false),
-            Divider(
+            const Divider(
               color: Colors.grey,
             ),
             SizedBox(
@@ -361,7 +357,7 @@ class _SellingScreenState extends State<SellingScreen> {
                 controller: contextController,
                 decoration: InputDecoration(
                   labelStyle: officialTextStyle,
-                  label: Text("내용"),
+                  label: const Text("내용"),
                   hintText: "여러분의 비결을 소개해주세요!(사실과 글이 다를 시 게시가 제한될 수 있습니다.)",
                   hintStyle: const TextStyle(
                       fontSize: 18,

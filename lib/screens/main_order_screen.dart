@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/screens/seller_information_screen.dart';
+import 'package:the_key_to/screens/show_expert_list_screen.dart';
 import 'package:the_key_to/screens/sign_in_screen.dart';
 import 'package:the_key_to/utils/constants.dart';
 import 'package:the_key_to/utils/utils.dart';
@@ -19,7 +20,7 @@ class MainOrderScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                GuideBox(SignInScreen(),screenSize.width*0.45, screenSize.height*0.3,"요청서 보내기","전문가를 선택하여 \n요청서 보내기"),
+                GuideBox(ShowExpertListScreen(),screenSize.width*0.45, screenSize.height*0.3,"요청서 보내기","전문가를 선택하여 \n요청서 보내기"),
                 GuideBox(SignInScreen(),screenSize.width*0.45, screenSize.height*0.3,"받은 요청서 확인","받은 요청 목록 확인하기"),
                 // GuideBox(SellerInformationScreen(),screenSize.width*0.45, screenSize.height*0.3,"받은 요청서 확인","받은 요청 확인하기"),
               ],

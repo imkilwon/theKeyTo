@@ -49,7 +49,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Container(
                   width: double.infinity,
                   height: screenSize.height * 0.3,
-                  child: Image.network(widget.productModel.url, fit: BoxFit.fitHeight),
+                  child: Image.network(widget.productModel.url, fit: BoxFit.cover),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
