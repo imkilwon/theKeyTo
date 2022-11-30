@@ -53,16 +53,12 @@ class Utils{
   }
   
   String ShowPrice({required String price}){
-    print("price = $price");
     List<String> result = price.split('');
     int cnt = result.length;
-    print("result = $result");
     int count = 0;
 
     while(true){
-      print(count);
       if(result.length -1== count) {
-        print("out");
         break;
       }
       count++;

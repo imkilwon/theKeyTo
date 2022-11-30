@@ -340,9 +340,9 @@ class CloudFirestoreClass_ {
         .get();
     for (int i = 0; i < snap.docs.length; i++) {
       DocumentSnapshot docSnap = snap.docs[i];
-      print("진입");
-      children.add(GestureDetector(
+      children.add(InkWell(
         onTap: () {
+
         },
         child: Card(
           margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
