@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:the_key_to/model/user_details_model.dart';
 import 'package:the_key_to/screens/send_order_to_individual_screen.dart';
+import 'package:the_key_to/utils/utils.dart';
 import 'package:the_key_to/widgets/information_screen_product_widget.dart';
 import 'package:the_key_to/widgets/simple_product_widget.dart';
 
@@ -260,7 +261,7 @@ class CloudFirestoreClass_ {
     return children;
   }
 
-  Future<String> sendIndividualScreen(
+  Future<String> sendIndividualOrder(
     String orderTitle,
     String sCost,
     String context,
@@ -287,7 +288,9 @@ class CloudFirestoreClass_ {
         "context": context,
         "year": dates[0],
         "month": dates[1],
-        "day": dates[2]
+        "day": dates[2],
+        "send_id" : firebaseAuth.currentUser!.uid,
+        "receive_id" : id,
       });
       await expert.doc(id).set({
         "orderTitle": orderTitle,
@@ -295,9 +298,11 @@ class CloudFirestoreClass_ {
         "context": context,
         "year": dates[0],
         "month": dates[1],
-        "day": dates[2]
+        "day": dates[2],
+        "send_id" : firebaseAuth.currentUser!.uid,
+        "receive_id" : id,
       });
-      output = "success";
+      output = "요청서를 성공적으로 보냈습니다.";
     } catch (e) {
       output = e.toString();
     }
@@ -328,7 +333,31 @@ class CloudFirestoreClass_ {
     }
     return children;
   }
-
+  Future<List<Widget>> getReceiveOrdersFromData() async {
+    List<Widget> children = [];
+    QuerySnapshot<Map<String, dynamic>> snap = await firebaseFirestore
+        .collection("users").doc(firebaseAuth.currentUser!.uid).collection('receive_order')
+        .get();
+    for (int i = 0; i < snap.docs.length; i++) {
+      DocumentSnapshot docSnap = snap.docs[i];
+      print("진입");
+      children.add(GestureDetector(
+        onTap: () {
+        },
+        child: Card(
+          margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          child: ListTile(
+            title: Text(docSnap['orderTitle']),
+            subtitle: Text(Utils().ShowPrice(price: "${docSnap['cost']}")),
+          ),
+        ),
+      ));
+    }
+    return children;
+  }
+  
+  
+  
   Future<bool> checkFavorite(String productId) async {
     if (firebaseAuth.currentUser != null) {
       //로그인 했으면 이 부분으로 들어옴

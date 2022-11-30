@@ -53,21 +53,26 @@ class Utils{
   }
   
   String ShowPrice({required String price}){
+    print("price = $price");
     List<String> result = price.split('');
     int cnt = result.length;
+    print("result = $result");
     int count = 0;
 
     while(true){
-      if(result.length -1== count)break;
-      count++;
-      if(count %3 ==0 && count != 0){
-        result.insert(cnt-count, ',');
+      print(count);
+      if(result.length -1== count) {
+        print("out");
+        break;
       }
-    }
+      count++;
+        if(count %3 ==0 && count != 0){
+          result.insert(cnt-count, ',');
+        }
+      }
     if(result[0]==','){
       result[0]='';
     }
-
     String result_price = result.join();
 
     return result_price+" 원";

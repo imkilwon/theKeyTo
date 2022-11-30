@@ -32,7 +32,7 @@ class SendOrderToIndividualScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () async{
-              final output = await CloudFirestoreClass_().sendIndividualScreen(titleEditingController.text, costEditingController.text,contextEditingController.text, sellerName, dates, sellerUid);
+              final output = await CloudFirestoreClass_().sendIndividualOrder(titleEditingController.text, costEditingController.text,contextEditingController.text, sellerName, dates, sellerUid);
               if(output == "요청서를 성공적으로 보냈습니다."){
                 Utils().showSnackBar(context: context, content:output, error: false);
                 //보낸 요청서 확인하기 page로 이동하기

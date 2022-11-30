@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:the_key_to/resources/cloudfirestore_methods.dart';
 
@@ -25,14 +25,11 @@ class _ShowExpertListScreenState extends State<ShowExpertListScreen> {
     await CloudFirestoreClass_().getExpertListFromUser();
     if(mounted){
       setState(() {
-        if (tmpExpert != null){
-          expert = tmpExpert!;
-        }
+        expert = tmpExpert;
       });
     }
   }
 
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
